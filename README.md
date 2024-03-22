@@ -1,47 +1,12 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# Proiect - Joculet
 
-## Cerințe obligatorii 
-
-Nerespectarea duce la nepunctarea proiectului
-
-- programul va fi scris în C++
-- programul va avea un meniu interactiv (doar pentru ilustrarea funcționalității)
-- programul nu are erori de compilare
-- programul nu are warning-uri (folosind -Wall)
-- existența a minim un punct din fiecare cerință
-- fară variabile globale
-- datele membre private
-- fara headere specifice unui sistem de operare (<windows.h>)
-- teste unitare pentru cerințele implementate (unde se poate, dacă nu apar probleme cu setup-ul de teste 😅)
-
-## Tema 1
-
-#### Cerințe
-- [ ] definirea a minim **2-3 clase** care sa interactioneze in cadrul temei alese (fie prin compunere, agregare sau doar sa apeleze metodele celeilalte intr-un mod logic) (5p)
-  - pentru o clasă:
-    - [ ] constructori de inițializare
-    - [ ] constructor supraîncărcat
-    - [ ] constructori de copiere
-    - [ ] `operator=` de copiere
-    - [ ] destructor
-    - [ ] `operator<<` pentru afișare (std::ostream)
-    - [ ] `operator>>` pentru citire (std::istream)
-    - [ ] alt operator supraîncărcat ca funcție membră
-    - [ ] alt operator supraîncărcat ca funcție non-membră
-  - pentru celelalte clase se va definii doar ce e nevoie
-- [ ] implementarea a minim 3 funcții membru publice pentru funcționalități specifice temei alese, dintre care cel puțin 1-2 funcții mai complexe (3p)
-- nu doar citiri/afișări sau adăugat/șters elemente într-un/dintr-un vector 
-- [ ] scenariu de utilizare a claselor definite (1p):
-  - crearea de obiecte și apelarea tuturor funcțiilor membru publice în main
-  - vor fi adăugate în fișierul `tastatura.txt` DOAR exemple de date de intrare de la tastatură (dacă există); dacă aveți nevoie de date din fișiere, creați alte fișiere separat
-- [ ] opțiune pentru citirea și afișarea a n obiecte (1p)
-
-## Recomandare Tema
-
-* rezolvați tema 1 cu niște itemi generali ca să puteți extinde tema cu ușurință la următoarele teme.
-  - coș de cumpărături + produse
-  - sistem de validare a documentelor + documente de identitate
-  - sistem de gestionare a biletelor + bilet 
-* funcționalitatea creată să folosească metode ale obiectului generic 
-* ar fi bine ca relația de agregare să fie făcută cu un obiect general în stilul celor de mai sus ^
-* branch-uri + commit-uri punctuale
+Joculetul consta in lupta cu niste monstri dintr-o pestera("Solo Leveling Cave") asa cum apare in mini-poveste.
+Am un mic tutorial la inceput in care specific ca pentru a juca nu trebuie decat sa apesi cateva taste (1,2,3,...) si sa introduci numele jucatorului tau(un username dintr-un cuvant).
+Clasele implementate sunt Player, Mob, Attack si urmeaza implementarea clasei Shop pentru ca player-ul sa-si poata regenera hp-ul in timul bataliei.
+Ca si sisteme implementate, am sistem de leveling, cu hp gain la fiecare level up, damage-ul pe care player-ul il poate da unui mob (creste la level-up), gold de inceput (coins) si 
+creste dupa fiecare mob omorat. De asemenea, mob-ului ii pot creste stats-urile/level-up daca te lupti de mai multe ori cu acesta. Deocamdata am doar 3 mobi cu care te poti lupta, ei 
+apar randomized, iar daca prin apasarea tastei corespunzatoare "Fugi" apar aceiasi mobi consecutiv ar trebui sa fie ok, o sa se schimbe la un moment dat.
+Revenind la shop, itemele gandite or sa fie potiuni de health si poate iteme care sa ti creasca stats-urile, pe care le poti cumpara cu goldul pe care-l obtii. 
+Asta o sa-mi aduca clase derivate pentru urmatoarea tema deci putem bifa :).
+Imi propun sa duc proiectul acesta cat mai departe posibil, in dorinta de a-i face grafica si poate a-l lansa pe o platforma de genul Google Play, Steam, etc.
+Stiu ca am mult de lucrat pentru a face acest lucru si ca poate ce am reusit sa fac pana acum nu e ceva genial fata de implementarile celorlalti colegi dar sper sa fie un proiect bun!

@@ -10,3 +10,6 @@ Revenind la shop, itemele gandite or sa fie potiuni de health si poate iteme car
 Asta o sa-mi aduca clase derivate pentru urmatoarea tema deci putem bifa :).
 Imi propun sa duc proiectul acesta cat mai departe posibil, in dorinta de a-i face grafica si poate a-l lansa pe o platforma de genul Google Play, Steam, etc.
 Stiu ca am mult de lucrat pentru a face acest lucru si ca poate ce am reusit sa fac pana acum nu e ceva genial fata de implementarile celorlalti colegi dar sper sa fie un proiect bun!
+
+Am vazut remarca temei de pe telefonul meu (cu One Piece) deci presupun ca te uiti sau te-ai uitat sau ai mai auzit de anime-uri. Daca "Solo Leveling Cave" te-a dus cu gandul la anime-ul Solo Leveling,
+ei bine vreau sa ajung sa fie ca o adaptare a anime-ului.

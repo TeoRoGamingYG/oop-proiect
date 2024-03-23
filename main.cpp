@@ -172,17 +172,18 @@
         std::cout<<"Acum cu interactiunile:"<<'\n';
         std::cout<<"1.Start"<<'\n';
         std::cout<<"2.Exit"<<'\n';
-        std::vector<Mob> enemies = {
-                Mob("Cave Zombie", 100, 10, 45, 150, 0),
-                Mob("McWolf", 60, 10, 25, 100, 0),
-                Mob("Gorlock the Destroyer", 250, 20, 75, 200, 0)
-        };
+        std::vector<Mob> enemies;
+        enemies.emplace_back("Cave Zombie", 100, 10, 45, 150, 0);
+        enemies.emplace_back("McWolf", 60, 10, 25, 100, 0);
+        enemies.emplace_back("Gorlock the Destroyer", 250, 20, 75, 200, 0);
+
         Mob mob_evo_zombie = enemies[0] + enemies[0];
         Mob mob_evo_mcwolf = enemies[1] + enemies[1];
         Mob mob_evo_gorlock = enemies[2] + enemies[2];
-        enemies.insert(enemies.begin()+3,mob_evo_zombie);
-        enemies.insert(enemies.begin()+4,mob_evo_mcwolf);
-        enemies.insert(enemies.begin()+5,mob_evo_gorlock);
+        enemies.push_back(mob_evo_zombie);
+        enemies.push_back(mob_evo_mcwolf);
+        enemies.push_back(mob_evo_gorlock);
+
         int interact1;
         std::cin>>interact1;
         if(interact1 == 1)

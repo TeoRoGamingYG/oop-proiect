@@ -21,8 +21,9 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& out, const Player& player);
+    friend std::istream& operator>>(std::istream& in, Player& pl);
 
-//    std::string getName()const{return name;}
+    [[nodiscard]] std::string getName()const{return name;}
 //    int getHp()const{return hp;}
     [[nodiscard]] int getAtk()const{return atk;}
 //    int getGold()const{return gold;}
@@ -47,13 +48,9 @@ public:
         return hp > 0;
     }
 
-    void player_earnExp(int experience)
+    void player_earn(int experience, int coins)
     {
         exp += experience;
-    }
-
-    void earnGold(int coins)
-    {
         gold += coins;
     }
 
@@ -79,6 +76,11 @@ std::ostream& operator<<(std::ostream& out, const Player& player) {
     return out;
 }
 
+std::istream& operator>>(std::istream& in, Player& pl) {
+    in >> pl.name;
+    return in;
+}
+
 class Mob{
 private:
     int hp, exp, gold, atk, level, ihp;
@@ -95,7 +97,34 @@ public:
         this->level = level;
     }
 
+    Mob& operator=(const Mob &aux)
+    {
+        if (this != &aux)
+        {
+            this->name = aux.name;
+            this->hp = aux.hp;
+            this->atk = aux.atk;
+            this->gold = aux.gold;
+            this->exp = aux.exp;
+            this->level = aux.level;
+            this->ihp = aux.ihp;
+        }
+        return *this;
+    }
+
+    Mob operator+(Mob& mob) const
+    {
+        Mob result = *this;
+        result.name = "Evolved " + result.name;
+        result.hp = mob.hp/2 + this->hp;
+        result.atk = mob.atk/2 + this->atk;
+        result.gold += this->gold;
+        result.exp = mob.exp/5 + this->exp;
+        return result;
+    }
+
     friend std::ostream& operator<<(std::ostream& out, const Mob& mob);
+//    friend std::istream& operator>>(std::istream& in, const Mob& mob);
 
     [[nodiscard]] std::string getName()const{return name;}
 //    int getHp()const{return hp;}
@@ -134,14 +163,19 @@ public:
         ihp = hp;
         atk += 10;
     }
+
     ~Mob()=default;
 };
 
 std::ostream& operator<<(std::ostream& out, const Mob& mob) {
     out << "Name: " << mob.name << '\n';
-    out << "HP: " << mob.hp << "; DMG: " << mob.atk << '\n';
+    out << "HP: " << mob.hp << "; DMG: " << mob.atk << "; EXP: " << mob.exp << '\n';
     return out;
 }
+
+//std::istream& operator>>(std::istream& in, const Mob& mob) {
+//    return in;
+//}
 
 class Attack {
 public:
@@ -174,20 +208,25 @@ int main()
     std::cout<<"victorios din grota!"<<'\n';
     std::cout<<"    P.S: Ai grija sa nu opresti rularea programului ca te ai dus...pierzi tot progresul din pacate ://"<<'\n';
     std::cout<<'\n'<<'\n';
-    std::string name;
     std::cout<<"Alege numele tau: ";
-    std::cin>>name;
-    Player player(name, 500, 20, 100, 0, 0);
-    std::cout<<'\n'<<'\n'<<"Salut "<< name <<'\n';
+    Player player("", 500, 20, 100, 0, 0);
+    std::cin>>player;
+    std::cout<<'\n'<<'\n'<<"Salut "<< player.getName() <<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Acum cu interactiunile:"<<'\n';
     std::cout<<"1.Start"<<'\n';
     std::cout<<"2.Exit"<<'\n';
     std::vector<Mob> enemies = {
-            Mob("Cave Zombie", 100, 10, 45, 175, 0),
-            Mob("McWolf", 60, 15, 25, 150, 0),
-            Mob("Gorlock the Destroyer", 250, 25, 75, 250, 0)
+            Mob("Cave Zombie", 100, 10, 45, 150, 0),
+            Mob("McWolf", 60, 10, 25, 100, 0),
+            Mob("Gorlock the Destroyer", 250, 20, 75, 200, 0)
     };
+    Mob mob_evo_zombie = enemies[0] + enemies[0];
+    Mob mob_evo_mcwolf = enemies[1] + enemies[1];
+    Mob mob_evo_gorlock = enemies[2] + enemies[2];
+    enemies.insert(enemies.begin()+3,mob_evo_zombie);
+    enemies.insert(enemies.begin()+4,mob_evo_mcwolf);
+    enemies.insert(enemies.begin()+5,mob_evo_gorlock);
     int interact1;
     std::cin>>interact1;
     if(interact1 == 1)
@@ -212,7 +251,7 @@ int main()
         while(interact2 != 0)
         {
             //int mobIndex = rand() % enemies.size();
-            int mobIndex = rand() % 3;
+            int mobIndex = rand() % 6;
             Mob& currentEnemy = enemies[mobIndex];
             std::cout<<"Ai in fata ta un "<<currentEnemy.getName()<<'\n'<<'\n';
             std::cout << "1.Ataca" << '\n';
@@ -228,13 +267,12 @@ int main()
                     v[mobIndex]++;
                     if (player.isAlive()) {
                         std::cout << '\n' << '\n';
-                        std::cout << name << " wins!" << std::endl;
+                        std::cout << player.getName() << " wins!" << std::endl;
                         std::cout << '\n' << '\n';
                         currentEnemy.reset_mob_hp();
                         if(v[mobIndex] % 4 == 0)
                             currentEnemy.LevelUp_Mob();
-                        player.player_earnExp(currentEnemy.getExp());
-                        player.earnGold(currentEnemy.getGold());
+                        player.player_earn(currentEnemy.getExp(),currentEnemy.getGold());
                         player.LevelUp_Player();
                         std::cout << "Informatii despre jucator:\n";
                         std::cout << player << '\n' << '\n';
@@ -264,13 +302,12 @@ int main()
                             v[mobIndex]++;
                             if (player.isAlive()) {
                                 std::cout << '\n' << '\n';
-                                std::cout << name << " wins!" << std::endl;
+                                std::cout << player.getName() << " wins!" << std::endl;
                                 std::cout << '\n' << '\n';
                                 currentEnemy.reset_mob_hp();
                                 if(v[mobIndex] % 4 == 0)
                                     currentEnemy.LevelUp_Mob();
-                                player.player_earnExp(currentEnemy.getExp());
-                                player.earnGold(currentEnemy.getGold());
+                                player.player_earn(currentEnemy.getExp(),currentEnemy.getGold());
                                 player.LevelUp_Player();
                                 std::cout << "Informatii despre jucator:\n";
                                 std::cout << player << '\n' << '\n';

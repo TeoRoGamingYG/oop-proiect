@@ -82,14 +82,13 @@
         Mob(const Mob& other) = default;
         Mob& operator=(const Mob& aux) = default;
 
-        Mob& operator+(const Mob& mob) const {
-            Mob* result = new Mob(*this);
-            result->name = "Evolved " + name;
-            result->hp = mob.hp / 2 + hp;
-            result->atk = mob.atk / 2 + atk;
-            result->gold += gold;
-            result->exp = mob.exp / 5 + exp;
-            return *result;
+        Mob& operator+(const Mob& mob) {
+            this->name = "Evolved " + name;
+            this->hp = mob.hp / 2 + hp;
+            this->atk = mob.atk / 2 + atk;
+            this->gold += gold;
+            this->exp = mob.exp / 5 + exp;
+            return *this;
         }
 
         friend std::ostream& operator<<(std::ostream& out, const Mob& mob);

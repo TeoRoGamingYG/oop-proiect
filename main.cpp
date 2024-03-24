@@ -8,7 +8,6 @@
 class Player{
 private:
     int hp = 500, exp = 0, level = 0, gold = 100, atk = 20, lhp = hp, lhps = 2;
-    //int verify = 0;
     std::string name;
 public:
     Player(std::string name, int hp, int atk, int gold, int exp, int level)
@@ -38,7 +37,7 @@ public:
             std::cout << '\n' << "Mai ai: " << lhps << " folosiri!" << '\n';
             std::cout << '\n' << "Ce alegi?" << '\n';
             std::cout << "1.Use Skill" << '\n';
-            std::cout << "2.Fugi" << '\n';
+            std::cout << "2.Continua" << '\n';
             int interact;
             std::cin >> interact;
             switch (interact) {
@@ -296,7 +295,7 @@ int main()
         int interact2 = 1;
         int v[3];
         v[0] = v[1] = v[2] = 0;
-        while (interact2 != 0)
+        while (interact2 != 0 )
         {
             int mobIndex = rand() % 6;
             Mob& currentEnemy = enemies[mobIndex];
@@ -309,9 +308,12 @@ int main()
             std::cin >> interact2;
             switch (interact2) {
                 case 1:
-                    while (player.isAlive() && currentEnemy.isAlive()) {
+                    while(player.isAlive() && currentEnemy.isAlive())
+                    {
                         player.LowHp_Skill();
                         Attack::performAttack(player, currentEnemy);
+                        if (!player.isAlive() || !currentEnemy.isAlive())
+                            break;
                     }
                     v[mobIndex]++;
                     if (player.isAlive())

@@ -246,6 +246,11 @@ int main()
     std::cout<<"Alege numele tau: ";
     Player player("", 500, 20, 100, 0, 0);
     std::cin>>player;
+    std::string exit="stop";
+    if(player.getName() == exit)
+    {
+        return 0;
+    }
     std::cout<<'\n'<<'\n'<<"Salut "<< player.getName() <<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Acum cu interactiunile:"<<'\n';

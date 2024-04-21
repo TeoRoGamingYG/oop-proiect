@@ -36,6 +36,38 @@ Nerespectarea duce la nepunctarea proiectului
   - vor fi adăugate în fișierul `tastatura.txt` DOAR exemple de date de intrare de la tastatură (dacă există); dacă aveți nevoie de date din fișiere, creați alte fișiere separat
 - [ ] opțiune pentru citirea și afișarea a n obiecte (1p)
 
+### Tema 2
+
+#### Cerințe
+- [ ] separarea codului din clase în `.h` (sau `.hpp`) și `.cpp` [(0.25p)](https://github.com/Ionnier/poo/tree/main/proiect/P01#separarea-implement%C4%83rii-metodelor-din-clase)
+- [ ] cât mai multe `const` [(0.25p)](https://github.com/Ionnier/poo/tree/main/labs/L04#reminder-const-everywhere)
+- [ ] moșteniri [(5p)](https://github.com/Ionnier/poo/tree/main/labs/L04#exemplu):
+  - [ ] minim o clasă de bază și **2 clase derivate**
+  - [ ] încercați să derivați o clasă creată anterior
+    - dacă nu reușiți
+      - creați o altă clasă care poate fi integrată cu clasele anterioare
+      - menționați de ce nu ați reușit și ce ați încercat
+  - [ ] ilustrați [upcast](https://github.com/Ionnier/poo/tree/main/labs/L04#solu%C8%9Bie-func%C8%9Bii-virtuale-late-binding)-ul și [downcast](https://github.com/Ionnier/poo/tree/main/labs/L04#smarter-downcast-dynamic-cast)-ul folosind funcții virtuale și pointeri la clasa de bază
+    - aceasta va fi făcută prin **2-3** metode specifice temei alese
+    - funcțiile pentru citire / afișare sau destructorul nu sunt incluse deși o să trebuiască să le implementați 
+  - [ ] apelarea constructorului din clasa de bază din [constructori din derivate](https://github.com/Ionnier/poo/tree/main/labs/L04#comportamentul-constructorului-la-derivare)
+  - [ ] suprascris [cc](https://github.com/Ionnier/poo/tree/main/labs/L04#comportamentul-constructorului-de-copiere-la-derivare)/op= pentru copieri/atribuiri corecte
+  - [ ] destructor [virtual](https://github.com/Ionnier/poo/tree/main/labs/L04#solu%C8%9Bie-func%C8%9Bii-virtuale-late-binding)
+- [ ] funcții și atribute `static` (în clase) [(1p)](https://github.com/Ionnier/poo/tree/main/labs/L04#static)
+- [ ] excepții [(1p)](https://github.com/Ionnier/poo/tree/main/labs/L04#exception-handling)
+  - porniți de la `std::exception`
+  - ilustrați propagarea excepțiilor
+  - ilustrati upcasting-ul în blocurile catch
+  - minim folosit într-un loc în care tratarea erorilor în modurile clasice este mai dificilă
+- [ ] folosirea unei clase abstracte (fie la exceptii, fie la moșteniri) [(0.5p)](https://github.com/Ionnier/poo/tree/main/labs/L04#clase-abstracte)
+- [ ] actualizarea meniului & scenariului de utilizare [(0.5p)](https://github.com/Ionnier/oop-template-t1/blob/main/main.cpp#L16)
+- [ ] citirea și afișarea a n obiecte [(0.5p)](https://github.com/Ionnier/oop-template-t1/blob/main/main.cpp#L13)
+  - poate fi combinat cu demonstrarea upcasting-ului & downcast-ului printr-un vector către o clasă de bază
+  - poate fi făcut oriunde (dacă aveți deja o clasă cu un vector, de exemplu o clasă Coș cu un vector<Produs>)
+- [ ] existența unui pull request către branch-ul în care lucrați ce include adăugarea unei noi derivate ce evidențiază că modificările aduse sunt minimale (0.5p)
+  - derivata nu poate fi una ștearsă și rescrisă
+  - derivata va avea date membre noi + o modificare de comportament pe una dintre funcțiile virtuale
+
 ## Recomandare Tema
 
 * rezolvați tema 1 cu niște itemi generali ca să puteți extinde tema cu ușurință la următoarele teme.

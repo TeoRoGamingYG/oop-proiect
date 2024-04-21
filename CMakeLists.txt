@@ -117,7 +117,14 @@ FetchContent_MakeAvailable(googletest)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
+add_executable(${PROJECT_NAME} main.cpp ${SOURCES}
+        include/item.h
+        include/shop.h
+        include/player.h
+        include/mob.h
+        include/attack.h
+        include/potion.h
+        include/sword.h)
 
 ###############################################################################
 
@@ -174,6 +181,13 @@ add_executable(
         ${HEADERS}
         ${TESTS}
         ${SOURCES}
+        src/item.cpp
+        src/shop.cpp
+        src/player.cpp
+        src/mob.cpp
+        src/attack.cpp
+        src/potion.cpp
+        src/sword.cpp
 )
 
 target_link_libraries(

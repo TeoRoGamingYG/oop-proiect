@@ -5,9 +5,71 @@
 #include <utility>
 #include <vector>
 
+class Player;
+
+class Item {
+protected:
+    std::string name;
+    int price, quantity, prop;
+public:
+    Item(std::string name, int prop, int price, int quantity)
+            : name(std::move(name)), price(price), quantity(quantity), prop(prop) {}
+
+    [[nodiscard]] const std::string& getName() const { return name; }
+    [[nodiscard]] int getPrice() const { return price; }
+    [[nodiscard]] int getQuantity() const { return quantity; }
+    [[nodiscard]] int getProp() const { return prop; }
+    void setQuantity(int nQ) { quantity = nQ; }
+    virtual ~Item() = default;
+};
+
+
+class Potion : public Item {
+private:
+    int hp;
+public:
+    Potion(std::string name, int hp, int price, int quantity) : Item(name, hp, price, quantity), hp(hp) {}
+    void use(Player& player);
+};
+
+class Sword : public Item {
+private:
+    int atk;
+public:
+    Sword(std::string name, int atk, int price, int quantity) : Item(name, atk, price, quantity), atk(atk) {}
+    void use(Player& player);
+};
+
+class Shop{
+private:
+    std::vector<Item> items;
+public:
+    void addPotion(const Potion& potion) {
+        items.push_back(potion);
+    }
+
+    void addSword(const Sword& sword) {
+        items.push_back(sword);
+    }
+
+    void displayItems() const
+    {
+        std::cout << "Shop:\n" << '\n';
+        for (const auto& item : items)
+        {
+            std::cout << item.getName() << " (" << item.getProp() << " hp)" << " - Pret: " << item.getPrice() << " (Stoc: " << item.getQuantity() << ")" << '\n';
+        }
+        std::cout << '\n';
+    }
+
+    [[nodiscard]] std::vector<Item>& getItems() {return items;}
+};
+
 class Player{
 private:
     int hp = 500, exp = 0, level = 0, gold = 100, atk = 20, lhp = hp, lhps = 2;
+    int verify = 0;
+    std::vector<Item>inventory;
     std::string name;
 public:
     Player(std::string name, int hp, int atk, int gold, int exp, int level)
@@ -26,7 +88,10 @@ public:
     [[nodiscard]] std::string getName()const{return name;}
     //[[nodiscard]] int getHp()const{return hp;}
     [[nodiscard]] int getAtk()const{return atk;}
-    //[[nodiscard]] int getVerify()const{return verify;}
+    [[nodiscard]] int getLvl()const{return level;}
+    [[nodiscard]] int getVerify()const{return verify;}
+    [[nodiscard]] std::vector<Item> getInv()const{return inventory;}
+    [[nodiscard]] int getGold()const{return gold;}
 
     void LowHp_Skill()
     {
@@ -37,7 +102,7 @@ public:
             std::cout << '\n' << "Mai ai: " << lhps << " folosiri!" << '\n';
             std::cout << '\n' << "Ce alegi?" << '\n';
             std::cout << "1.Use Skill" << '\n';
-            std::cout << "2.Continua" << '\n';
+            std::cout << "2.Fugi" << '\n';
             int interact;
             std::cin >> interact;
             switch (interact) {
@@ -47,9 +112,114 @@ public:
                     lhps--;
                     break;
                 case 2:
+                    verify = interact;
+                    break;
+                default:
                     break;
             }
         }
+    }
+
+    void addToInventory(const Item& item)
+    {
+        bool found = false;
+        for(auto& eItem : inventory)
+        {
+            if(eItem.getName() == item.getName())
+            {
+                eItem.setQuantity(eItem.getQuantity() + 1);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            inventory.emplace_back(item.getName(), item.getProp(), item.getPrice(), 1);
+        }
+    }
+
+    void showInventory() const
+    {
+        std::cout << "Inventarul:\n";
+        for (int i = 0; i < inventory.size(); ++i)
+        {
+            std::cout << i + 1 << ". " << inventory[i].getName() << " (" << inventory[i].getQuantity() << ")" <<'\n';
+        }
+    }
+
+    std::vector<Item> getInventory() {
+        return inventory;
+    }
+
+    [[nodiscard]] int getInventorySize() const
+    {
+        return inventory.size();
+    }
+
+    [[nodiscard]] bool isInventoryEmpty() const
+    {
+        return inventory.empty();
+    }
+
+    void buyItem(const Item& item, Shop& shop)
+    {
+        if (gold >= item.getPrice() && item.getQuantity() != 0)
+        {
+            gold -= item.getPrice();
+            addToInventory(item);
+            std::cout << "Ai cumparat " << item.getName() << " cu succes!" << '\n' << '\n';
+
+            for (auto& shopItem : shop.getItems())
+            {
+                if (shopItem.getName() == item.getName())
+                {
+                    shopItem = Item(item.getName(), shopItem.getProp(), item.getPrice(), item.getQuantity() - 1);
+                    break;
+                }
+            }
+        }
+        else if(gold < item.getPrice())
+        {
+            std::cout << "Nu ai suficient aur pentru a cumpara " << item.getName() << "." << '\n' << '\n';
+        }
+        else if(item.getQuantity() == 0)
+        {
+            std:: cout << "Magazinul nu are stocuri suficiente. Ne pare rau!" << '\n' << '\n';
+        }
+    }
+
+    void useItem(int index)
+    {
+        if (index >= 0 && index < inventory.size())
+        {
+            if (inventory[index].getName() == "Potion")
+            {
+                Potion potion = dynamic_cast<Potion&>(inventory[index]);
+                potion.use(*this);
+
+                inventory[index].setQuantity(inventory[index].getQuantity() - 1);
+
+                if (inventory[index].getQuantity() == 0)
+                {
+                    inventory.erase(inventory.begin() + index);
+                }
+            }
+            else if (inventory[index].getName() == "Sword")
+            {
+                Sword sword = dynamic_cast<Sword&>(inventory[index]);
+                sword.use(*this);
+            }
+        }
+        else std::cout << "Indexul itemului este invalid." << std::endl;
+    }
+
+    void addHp(int hp)
+    {
+        this->hp += hp;
+    }
+
+    void addAtk(int atk)
+    {
+        this->atk += atk;
     }
 
     void takeDmg(int damage)
@@ -113,12 +283,12 @@ std::istream& operator>>(std::istream& in, Player& pl) {
 }
 
 class Mob{
-private:
+protected:
     std::string name;
-    int hp, ihp, atk, gold, exp, level;
+    int hp, ihp, atk, gold, exp;
 public:
-    Mob(std::string name, int hp, int atk, int gold, int exp, int level)
-            : name(std::move(name)), hp(hp), ihp(hp), atk(atk), gold(gold), exp(exp), level(level) {}
+    Mob(std::string name, int hp, int atk, int gold, int exp)
+            : name(std::move(name)), hp(hp), ihp(hp), atk(atk), gold(gold), exp(exp){}
 
     Mob(const Mob& other) = default;
     Mob& operator=(const Mob& aux) = default;
@@ -159,14 +329,6 @@ public:
         hp = ihp;
     }
 
-    void LevelUp_Mob()
-    {
-        level++;
-        hp = ihp + 25;
-        ihp = hp;
-        atk += 10;
-    }
-
     ~Mob()=default;
 };
 
@@ -180,36 +342,34 @@ bool operator<(const Mob& mob1, const Mob& mob2) {
     return mob1.getHp() < mob2.getHp();
 }
 
-void input_mobi(int n)
-{
-    std::vector<Mob> mobs;
-    for(int i = 0; i < n; i++)
-    {
-        std::string name;
-        int hp = 0, atk = 0, gold = 0, exp = 0, level = 0;
-        std::cout<<'\n';
-        std::cout<<"NAME: ";
-        std::cin>>name;
-        std::cout<<" HP: ";
-        std::cin>>hp;
-        std::cout<<" DMG: ";
-        std::cin>>atk;
-        std::cout<<" GOLD: ";
-        std::cin>>gold;
-        std::cout<<" EXP: ";
-        std::cin>>exp;
-        std::cout<<" LEVEL: ";
-        std::cin>>level;
+class MobInput : public Mob {
+public:
+//    MobInput(std::string name, int hp, int atk, int gold, int exp)
+//            : Mob(std::move(name), hp, atk, gold, exp) {}
 
-        Mob x(name,hp,atk,gold,exp,level);
-        mobs.push_back(x);
+    static std::vector<Mob> input_mobi(int n) {
+        std::vector<Mob> mobs;
+        for(int i = 0; i < n; i++) {
+            std::string name;
+            int hp = 0, atk = 0, gold = 0, exp = 0;
+            std::cout << '\n';
+            std::cout << "NAME: ";
+            std::cin >> name;
+            std::cout << " HP: ";
+            std::cin >> hp;
+            std::cout << " DMG: ";
+            std::cin >> atk;
+            std::cout << " GOLD: ";
+            std::cin >> gold;
+            std::cout << " EXP: ";
+            std::cin >> exp;
+
+            mobs.emplace_back(name, hp, atk, gold, exp);
+        }
+        std::cout << '\n';
+        return mobs;
     }
-    std::cout<<'\n';
-    for(int i = 0; i < n; i++)
-    {
-        std::cout<<mobs[i]<<'\n';
-    }
-}
+};
 
 class Attack {
 public:
@@ -224,12 +384,47 @@ public:
     ~Attack()=default;
 };
 
-//class Shop{
-//private:
-//    int hp_pot_small, hp_pot_medium, hp_pot_big;
-//public:
-//
-//};
+void fightEnemy(Player& player, Mob& currentEnemy)
+{
+    while (player.isAlive() && currentEnemy.isAlive() && player.getVerify() != 2) {
+        Attack::performAttack(player, currentEnemy);
+        player.LowHp_Skill();
+    }
+    if (player.getVerify() == 2) {
+        std::cout << '\n' << "Felicitari! Ai reusit sa scapi de: " << currentEnemy.getName() << '\n' << '\n';
+    } else if (player.isAlive()) {
+        std::cout << '\n' << '\n';
+        std::cout << player.getName() << " wins!" << std::endl;
+        std::cout << '\n' << '\n';
+        currentEnemy.reset_mob_hp();
+        player.player_earn(currentEnemy.getExp(), currentEnemy.getGold());
+        player.LevelUp_Player();
+        std::cout << "Informatii despre jucator:\n";
+        std::cout << player << '\n' << '\n';
+    } else {
+        std::cout << currentEnemy.getName() << " wins!" << std::endl;
+        std::cout << '\n' << '\n';
+        std::cout << "--------GAME OVER--------";
+        std::cout << '\n' << '\n';
+        exit(0);
+    }
+}
+
+void Potion::use(Player& player) {
+    int hpToAdd = getProp();
+    std::cout << "Ai folosit potiunea " << getName() << ". Aceasta iti adauga " << hpToAdd << " hp." << std::endl;
+    player.addHp(hpToAdd);
+}
+
+void Sword::use(Player& player) {
+    int atkToAdd = getProp();
+    std::cout << "Ai echipat sabia " << getName() << ".\n";
+    player.addAtk(atkToAdd);
+}
+
+//void Player::useItem(UsableItem& item) {
+//    item.use(*this);
+//}
 
 int main()
 {
@@ -244,12 +439,18 @@ int main()
     std::cout<<'\n'<<'\n';
     std::cout<<"Alege numele tau: ";
     Player player("", 500, 20, 100, 0, 0);
+    Potion healthPotionSmall("Small Health Potion", 25, 100, 3);
+    Potion healthPotionMedium("Medium Health Potion", 40, 150, 3);
+    Potion healthPotionLarge("Large Health Potion", 75, 225, 3);
+    Sword silverSword("Silver Sword", 20, 500, 1);
+//    player.useItem(healthPotion);
+//    player.useItem(silverSword);
+    Shop shop;
+    shop.addPotion(healthPotionSmall);
+    shop.addPotion(healthPotionMedium);
+    shop.addPotion(healthPotionLarge);
+    shop.addSword(silverSword);
     std::cin>>player;
-    std::string exit="stop";
-    if(player.getName() == exit)
-    {
-        return 0;
-    }
     std::cout<<'\n'<<'\n'<<"Salut "<< player.getName() <<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Acum cu interactiunile:"<<'\n';
@@ -261,12 +462,12 @@ int main()
     int n;
     std::cin>>n;
     std::cout<<'\n';
-    input_mobi(n);
+    std::vector<Mob> mobs = MobInput::input_mobi(n);
     std::cout<<'\n'<<"Revenim la joc (1.Start; 2.Exit;) ... ";
     std::vector<Mob> enemies = {
-            Mob("Cave Zombie", 100, 10, 45, 150, 0),
-            Mob("McWolf", 60, 10, 25, 100, 0),
-            Mob("Gorlock the Destroyer", 250, 20, 75, 200, 0)
+            Mob("Cave Zombie", 100, 10, 35, 150),
+            Mob("McWolf", 60, 10, 25, 100),
+            Mob("Gorlock the Destroyer", 250, 20, 50, 200)
     };
     Mob mob_evo_zombie = enemies[0] + enemies[0];
     Mob mob_evo_mcwolf = enemies[1] + enemies[1];
@@ -290,55 +491,180 @@ int main()
         std::cout<<"    'Am vrut pestera eu...da...cu putoarea asta mai bine-mi iau direct viata si termin mai repede...'"<<'\n';
         std::cout<<"    Lasand la o parte dorintele de suicid, continui sa inaintezi si auzi in departare un raget puternic.";
         std::cout<<'\n'<<'\n'<<"................"<<'\n'<<'\n';
-        std::cout<<"    Este primul monstru cu care te intalnesti? Daca da, ai patru posibilitati in momentul de fata. Ce alegi?";
+        std::cout<<"    Este primul monstru cu care te intalnesti? Daca da, ai mai multe posibilitati in momentul de fata. Ce alegi?";
         std::cout<<'\n'<<'\n'<<"................"<<'\n'<<'\n';
         int interact2 = 1;
-        int v[3];
-        v[0] = v[1] = v[2] = 0;
-        while (interact2 != 0 )
+        int mobIndex;
+        while (interact2 != 0)
         {
-            int mobIndex = rand() % 6;
+            if(player.getLvl() == 0) mobIndex = rand() % 3;
+            else mobIndex = rand() % 6;
             Mob& currentEnemy = enemies[mobIndex];
             std::cout << "Ai in fata ta un " << currentEnemy.getName() << '\n' << '\n';
             std::cout << "Informatii despre monstru:\n";
             std::cout << enemies[mobIndex] << '\n';
             std::cout << "1.Ataca" << '\n';
-            std::cout << "2.Fugi" << '\n';
+            std::cout << "2.Inventory" << '\n';
+            std::cout << "3.Shop" << '\n';
+            std::cout << "4.Fugi" << '\n';
             std::cout << "0.Exit Cave" << '\n';
             std::cin >> interact2;
-            switch (interact2) {
+            switch (interact2)
+            {
+                case 0:
+                    return 0;
                 case 1:
-                    while(player.isAlive() && currentEnemy.isAlive())
-                    {
-                        player.LowHp_Skill();
-                        Attack::performAttack(player, currentEnemy);
-                        if (!player.isAlive() || !currentEnemy.isAlive())
-                            break;
-                    }
-                    v[mobIndex]++;
-                    if (player.isAlive())
-                    {
-                        std::cout << '\n' << '\n';
-                        std::cout << player.getName() << " wins!" << std::endl;
-                        std::cout << '\n' << '\n';
-                        currentEnemy.reset_mob_hp();
-                        if (v[mobIndex] % 4 == 0)
-                            currentEnemy.LevelUp_Mob();
-                        player.player_earn(currentEnemy.getExp(), currentEnemy.getGold());
-                        player.LevelUp_Player();
-                        std::cout << "Informatii despre jucator:\n";
-                        std::cout << player << '\n' << '\n';
-                    }
-                    else
-                    {
-                        std::cout << currentEnemy.getName() << " wins!" << std::endl;
-                        std::cout << '\n' << '\n';
-                        std::cout << "--------GAME OVER--------";
-                        std::cout << '\n' << '\n';
-                        interact2 = 0;
-                    }
+                    fightEnemy(player, currentEnemy);
                     break;
                 case 2:
+                    if (!player.isInventoryEmpty())
+                    {
+                        player.showInventory();
+                        std::cout << "Ce item vrei sa folosesti?" << '\n';
+                        int choice;
+                        std::cin >> choice;
+                        if (choice >= 1 && choice <= player.getInventorySize()) {
+                            player.useItem(choice - 1); // Folosește poțiunea selectată din inventar
+                        } else {
+                            std::cout << "Selectare invalida." << '\n';
+                        }
+                    }
+                    else {
+                        std::cout << "Inventarul este gol." << std::endl;
+                    }
+                    std::cout << "Vrei sa accesezi shopul?" << '\n';
+                    std::cout << "1.DA" << '\n';
+                    std::cout << "2.NU" << '\n';
+                    int interact3;
+                    std::cin >> interact3;
+                    if(interact3 == 1)
+                    {
+                        shop.displayItems();
+                        const std::vector<Item>& shopItems = shop.getItems();
+                        if(player.getGold() < shopItems[0].getPrice())
+                            std::cout << "Ai fonduri insuficiente pentru a mai putea cumpara din magazin!" << '\n' << '\n';
+                        else
+                        {
+                            std::cout << "Alege ce potiune doresti sa achizitionezi: " << '\n';
+                            int ok = 1;
+                            while(player.getGold() >= shopItems[0].getPrice() && ok == 1)
+                            {
+                                std::cout << "1." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
+                                std::cout << "2." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
+                                std::cout << "3." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
+                                std::cout << "4." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
+                                std::cout << "0.Exit Shop" << '\n';
+                                int i;
+                                std::cin >> i;
+                                if(i == 0) break;
+                                if(!shopItems.empty())
+                                {
+                                    const Item& itemToBuy = shopItems[i-1];
+                                    player.buyItem(itemToBuy, shop);
+                                }
+                                if(player.getGold() < shopItems[0].getPrice())
+                                {
+                                    std::cout << "Ai fonduri insuficiente pentru a mai putea cumpara din magazin!" << '\n' << '\n';
+                                    ok = 0;
+                                }
+                                else
+                                {
+                                    std::cout << "Continui cumparaturile?" << '\n';
+                                    std::cout << "1.DA" << '\n';
+                                    std::cout << "2.NU" << '\n';
+                                    int j;
+                                    std::cin >> j;
+                                    if(j == 2) ok = 0;
+                                }
+                            }
+                        }
+                        std::cout << "Continui lupta sau fugi?" << '\n';
+                        std::cout << "1.Continui" << '\n';
+                        std::cout << "2.Fugi" << '\n';
+                        std::cout << "0.Exit Cave" << '\n';
+                        int interact4;
+                        std::cin >> interact4;
+                        if(interact4 == 1) fightEnemy(player, currentEnemy);
+                        else if(interact4 == 2)
+                        {
+                            std::cout << '\n' << "Ai fugit de " << currentEnemy.getName() << "!" << '\n';
+                            break;
+                        }
+                        else if(interact4 == 0) return 0;
+                    }
+                    else if(interact3 == 2)
+                    {
+                        std::cout << "Continui lupta sau fugi?" << '\n';
+                        std::cout << "1.Continui" << '\n';
+                        std::cout << "2.Fugi" << '\n';
+                        std::cout << "0.Exit Cave" << '\n';
+                        int interact4;
+                        std::cin >> interact4;
+                        if(interact4 == 1) fightEnemy(player, currentEnemy);
+                        else if(interact4 == 2)
+                        {
+                            std::cout << '\n' << "Ai fugit de " << currentEnemy.getName() << "!" << '\n';
+                            break;
+                        }
+                        else if(interact4 == 0) return 0;
+                    }
+                    break;
+                case 4:
+                    std::cout << '\n' << "Ai fugit de " << currentEnemy.getName() << "!" << '\n';
+                    break;
+                case 3:
+                    shop.displayItems();
+                    const std::vector<Item>& shopItems = shop.getItems();
+                    if(player.getGold() < shopItems[0].getPrice())
+                        std::cout << "Ai fonduri insuficiente pentru a putea cumpara din magazin!" << '\n' << '\n';
+                    else
+                    {
+                        std::cout << "Alege ce potiune doresti sa achizitionezi: " << '\n';
+                        int ok = 1;
+                        while(player.getGold() >= shopItems[0].getPrice() && ok == 1)
+                        {
+                            std::cout << "1." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
+                            std::cout << "2." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
+                            std::cout << "3." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
+                            std::cout << "4." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
+                            std::cout << "0.Exit Shop" << '\n';
+                            int i;
+                            std::cin >> i;
+                            if(i == 0) break;
+                            if(!shopItems.empty())
+                            {
+                                const Item& itemToBuy = shopItems[i-1];
+                                player.buyItem(itemToBuy, shop);
+                            }
+                            if(player.getGold() < shopItems[0].getPrice())
+                            {
+                                std::cout << "Ai fonduri insuficiente pentru a putea cumpara din magazin!" << '\n' << '\n';
+                                ok = 0;
+                            }
+                            else
+                            {
+                                std::cout << "Continui cumparaturile?" << '\n';
+                                std::cout << "1.DA" << '\n';
+                                std::cout << "2.NU" << '\n';
+                                int j;
+                                std::cin >> j;
+                                if(j == 2) ok = 0;
+                            }
+                        }
+                    }
+                    std::cout << "Continui lupta sau fugi?" << '\n';
+                    std::cout << "1.Continui" << '\n';
+                    std::cout << "2.Fugi" << '\n';
+                    std::cout << "0.Exit Cave" << '\n';
+                    int interact4;
+                    std::cin >> interact4;
+                    if(interact4 == 1) fightEnemy(player, currentEnemy);
+                    else if(interact4 == 2)
+                    {
+                        std::cout << '\n' << "Ai fugit de " << currentEnemy.getName() << "!" << '\n';
+                        break;
+                    }
+                    else if(interact4 == 0) return 0;
                     break;
             }
         }

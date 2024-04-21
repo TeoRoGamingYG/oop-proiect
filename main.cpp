@@ -422,10 +422,6 @@ void Sword::use(Player& player) {
     player.addAtk(atkToAdd);
 }
 
-//void Player::useItem(UsableItem& item) {
-//    item.use(*this);
-//}
-
 int main()
 {
     srand(time(nullptr));
@@ -443,8 +439,6 @@ int main()
     Potion healthPotionMedium("Medium Health Potion", 40, 150, 3);
     Potion healthPotionLarge("Large Health Potion", 75, 225, 3);
     Sword silverSword("Silver Sword", 20, 500, 1);
-//    player.useItem(healthPotion);
-//    player.useItem(silverSword);
     Shop shop;
     shop.addPotion(healthPotionSmall);
     shop.addPotion(healthPotionMedium);

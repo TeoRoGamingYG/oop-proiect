@@ -22,3 +22,4 @@ void Shop::displayItems() const {
 std::vector<Item>& Shop::getItems() {
     return items;
 }
+

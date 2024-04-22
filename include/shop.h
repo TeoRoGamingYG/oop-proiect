@@ -5,9 +5,7 @@
 #ifndef OOP_SHOP_H
 #define OOP_SHOP_H
 
-#include <iostream>
 #include <vector>
-#include "player.h"
 #include "item.h"
 #include "potion.h"
 #include "sword.h"

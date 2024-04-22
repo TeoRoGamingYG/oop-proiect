@@ -2,7 +2,7 @@
 // Created by Teo on 4/21/2024.
 //
 #include <iostream>
-#include "Mob.h"
+#include "mob.h"
 
 Mob::Mob(std::string name, int hp, int atk, int gold, int exp)
         : name(std::move(name)), hp(hp), ihp(hp), atk(atk), gold(gold), exp(exp) {}

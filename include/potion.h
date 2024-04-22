@@ -6,14 +6,12 @@
 #define OOP_POTION_H
 
 #include "item.h"
-#include "player.h"
+class Player;
 
 class Potion : public Item {
-private:
-    int hp;
 public:
     Potion([[maybe_unused]] std::string name, int hp, int price, int quantity);
     void use(Player& player);
 };
 
-#endif //OOP_POTION_H
+#endif

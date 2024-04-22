@@ -5,11 +5,12 @@
 #define OOP_PLAYER_H
 
 #include <iostream>
+#include <vector>
 #include <string>
 #include "item.h"
-#include "shop.h"
-#include "sword.h"
-#include "potion.h"
+class Shop;
+class Potion;
+class Sword;
 
 class Player {
 private:
@@ -17,8 +18,9 @@ private:
     int verify = 0;
     std::vector<Item> inventory;
     std::string name;
-
 public:
+    void buyItem(const Item& item, Shop& shop);
+    void useItem(int index);
     Player(std::string name, int hp, int atk, int gold, int exp, int level);
 
     friend std::ostream& operator<<(std::ostream& out, const Player& player);
@@ -28,17 +30,13 @@ public:
     [[nodiscard]] int getAtk() const;
     [[nodiscard]] int getLvl() const;
     [[nodiscard]] int getVerify() const;
-    //[[nodiscard]] std::vector<Item> getInv() const;
     [[nodiscard]] int getGold() const;
 
     void LowHp_Skill();
     void addToInventory(const Item& item);
     void showInventory() const;
-    //std::vector<Item> getInventory();
     [[nodiscard]] int getInventorySize() const;
     [[nodiscard]] bool isInventoryEmpty() const;
-    void buyItem(const Item& item, Shop& shop);
-    void useItem(int index);
     void addHp(int hp);
     void addAtk(int atk);
     void takeDmg(int damage);
@@ -48,4 +46,4 @@ public:
     ~Player() = default;
 };
 
-#endif //OOP_PLAYER_H
+#endif

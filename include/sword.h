@@ -6,7 +6,7 @@
 #define OOP_SWORD_H
 
 #include "item.h"
-#include "player.h"
+class Player;
 
 class Sword : public Item {
 private:

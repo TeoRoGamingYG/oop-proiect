@@ -14,6 +14,8 @@ private:
 public:
     Potion(std::string name, int hp, int price, int quantity) : Item(std::move(name), hp, price, quantity), hp(hp) {};
     void use(Player& player);
+    [[nodiscard]] int getHp() const;
+    //[[nodiscard]] std::string getName() const;
 };
 
 #endif

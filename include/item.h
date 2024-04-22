@@ -1,7 +1,3 @@
-//
-// Created by Teo on 4/21/2024.
-//
-
 #ifndef OOP_ITEM_H
 #define OOP_ITEM_H
 

@@ -9,3 +9,11 @@ void Potion::use(Player& player) {
     std::cout << "Ai folosit potiunea " << getName() << ". Aceasta iti adauga " << hpToAdd << " hp." << std::endl;
     player.addHp(hpToAdd);
 }
+
+int Potion::getHp() const {
+    return hp;
+}
+
+//std::string Potion::getName() const {
+//    return name;
+//}

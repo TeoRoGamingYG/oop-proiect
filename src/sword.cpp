@@ -9,3 +9,11 @@ void Sword::use(Player& player) {
     std::cout << "Ai echipat sabia " << getName() << ".\n";
     player.addAtk(atkToAdd);
 }
+
+int Sword::getAtk() const {
+    return atk;
+}
+
+//std::string Sword::getName() const {
+//    return name;
+//}

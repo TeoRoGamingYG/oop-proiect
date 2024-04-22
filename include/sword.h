@@ -16,6 +16,8 @@ private:
 public:
     Sword(std::string name, int atk, int price, int quantity) : Item(std::move(name), atk, price, quantity), atk(atk) {};
     void use(Player& player);
+    [[nodiscard]] int getAtk() const;
+    //[[nodiscard]] std::string getName() const;
 };
 
 #endif

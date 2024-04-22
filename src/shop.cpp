@@ -1,6 +1,7 @@
 //
 // Created by Teo on 4/21/2024.
 //
+#include <iostream>
 #include "shop.h"
 
 void Shop::addPotion(const Potion& potion) {

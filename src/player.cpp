@@ -88,7 +88,7 @@ void Player::addToInventory(const Item& item)
 
 void Player::showInventory() const {
     std::cout << "Inventarul:\n";
-    for (int i = 0; i < inventory.size(); ++i)
+    for (unsigned int i = 0; i < inventory.size(); ++i)
     {
         std::cout << i + 1 << ". " << inventory[i].getName() << " (" << inventory[i].getQuantity() << ")" <<'\n';
     }
@@ -129,7 +129,7 @@ void Player::buyItem(const Item& item, Shop& shop) {
 }
 
 void Player::useItem(int index) {
-    if (index >= 0 && index < inventory.size())
+    if (index >= 0 && unsigned(index) < inventory.size())
     {
         if (inventory[index].getName() == "Potion")
         {

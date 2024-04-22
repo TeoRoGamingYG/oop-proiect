@@ -2,387 +2,393 @@
 #include <cstdlib>
 #include <string>
 #include <ctime>
-#include <utility>
 #include <vector>
+#include "item.h"
+#include "potion.h"
+#include "sword.h"
+#include "shop.h"
+#include "Player.h"
+#include "mob.h"
+#include "attack.h"
 
-class Player;
+//class Player;
+//
+//class Item {
+//protected:
+//    std::string name;
+//    int price, quantity, prop;
+//public:
+//    Item(std::string name, int prop, int price, int quantity)
+//            : name(std::move(name)), price(price), quantity(quantity), prop(prop) {}
+//
+//    [[nodiscard]] const std::string& getName() const { return name; }
+//    [[nodiscard]] int getPrice() const { return price; }
+//    [[nodiscard]] int getQuantity() const { return quantity; }
+//    [[nodiscard]] int getProp() const { return prop; }
+//    void setQuantity(int nQ) { quantity = nQ; }
+//    virtual ~Item() = default;
+//};
+//
+//
+//class Potion : public Item {
+//private:
+//    int hp;
+//public:
+//    Potion(std::string name, int hp, int price, int quantity) : Item(name, hp, price, quantity), hp(hp) {}
+//    void use(Player& player);
+//};
+//
+//class Sword : public Item {
+//private:
+//    int atk;
+//public:
+//    Sword(std::string name, int atk, int price, int quantity) : Item(name, atk, price, quantity), atk(atk) {}
+//    void use(Player& player);
+//};
+//
+//class Shop{
+//private:
+//    std::vector<Item> items;
+//public:
+//    void addPotion(const Potion& potion) {
+//        items.push_back(potion);
+//    }
+//
+//    void addSword(const Sword& sword) {
+//        items.push_back(sword);
+//    }
+//
+//    void displayItems() const
+//    {
+//        std::cout << "Shop:\n" << '\n';
+//        for (const auto& item : items)
+//        {
+//            std::cout << item.getName() << " (" << item.getProp() << " hp)" << " - Pret: " << item.getPrice() << " (Stoc: " << item.getQuantity() << ")" << '\n';
+//        }
+//        std::cout << '\n';
+//    }
+//
+//    [[nodiscard]] std::vector<Item>& getItems() {return items;}
+//};
+//
+//class Player{
+//private:
+//    int hp = 500, exp = 0, level = 0, gold = 100, atk = 20, lhp = hp, lhps = 2;
+//    int verify = 0;
+//    std::vector<Item>inventory;
+//    std::string name;
+//public:
+//    Player(std::string name, int hp, int atk, int gold, int exp, int level)
+//    {
+//        this->name = std::move(name);
+//        this->hp = hp;
+//        this->atk = atk;
+//        this->gold = gold;
+//        this->exp = exp;
+//        this->level = level;
+//    }
+//
+//    friend std::ostream& operator<<(std::ostream& out, const Player& player);
+//    friend std::istream& operator>>(std::istream& in, Player& pl);
+//
+//    [[nodiscard]] std::string getName()const{return name;}
+//    //[[nodiscard]] int getHp()const{return hp;}
+//    [[nodiscard]] int getAtk()const{return atk;}
+//    [[nodiscard]] int getLvl()const{return level;}
+//    [[nodiscard]] int getVerify()const{return verify;}
+//    [[nodiscard]] std::vector<Item> getInv()const{return inventory;}
+//    [[nodiscard]] int getGold()const{return gold;}
+//
+//    void LowHp_Skill()
+//    {
+//        if(level >= 1 && hp <= 50 && lhps != 0)
+//        {
+//            std::cout << '\n' << "Hey, "<< name << "...mai ai putin hp...ai putea sa mori daca continui batalia." << '\n';
+//            std::cout << '\n' << "Totusi te poate ajuta skill-ul deblocat (LowHp Skill)!" << '\n';
+//            std::cout << '\n' << "Mai ai: " << lhps << " folosiri!" << '\n';
+//            std::cout << '\n' << "Ce alegi?" << '\n';
+//            std::cout << "1.Use Skill" << '\n';
+//            std::cout << "2.Fugi" << '\n';
+//            int interact;
+//            std::cin >> interact;
+//            switch (interact) {
+//                case 1:
+//                    hp+=hp;
+//                    atk+=5;
+//                    lhps--;
+//                    break;
+//                case 2:
+//                    verify = interact;
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    }
+//
+//    void addToInventory(const Item& item)
+//    {
+//        bool found = false;
+//        for(auto& eItem : inventory)
+//        {
+//            if(eItem.getName() == item.getName())
+//            {
+//                eItem.setQuantity(eItem.getQuantity() + 1);
+//                found = true;
+//                break;
+//            }
+//        }
+//        if (!found) {
+//            inventory.emplace_back(item.getName(), item.getProp(), item.getPrice(), 1);
+//        }
+//    }
+//
+//    void showInventory() const
+//    {
+//        std::cout << "Inventarul:\n";
+//        for (int i = 0; i < inventory.size(); ++i)
+//        {
+//            std::cout << i + 1 << ". " << inventory[i].getName() << " (" << inventory[i].getQuantity() << ")" <<'\n';
+//        }
+//    }
+//
+//    std::vector<Item> getInventory() {
+//        return inventory;
+//    }
+//
+//    [[nodiscard]] int getInventorySize() const
+//    {
+//        return inventory.size();
+//    }
+//
+//    [[nodiscard]] bool isInventoryEmpty() const
+//    {
+//        return inventory.empty();
+//    }
+//
+//    void buyItem(const Item& item, Shop& shop)
+//    {
+//        if (gold >= item.getPrice() && item.getQuantity() != 0)
+//        {
+//            gold -= item.getPrice();
+//            addToInventory(item);
+//            std::cout << "Ai cumparat " << item.getName() << " cu succes!" << '\n' << '\n';
+//
+//            for (auto& shopItem : shop.getItems())
+//            {
+//                if (shopItem.getName() == item.getName())
+//                {
+//                    shopItem = Item(item.getName(), shopItem.getProp(), item.getPrice(), item.getQuantity() - 1);
+//                    break;
+//                }
+//            }
+//        }
+//        else if(gold < item.getPrice())
+//        {
+//            std::cout << "Nu ai suficient aur pentru a cumpara " << item.getName() << "." << '\n' << '\n';
+//        }
+//        else if(item.getQuantity() == 0)
+//        {
+//            std:: cout << "Magazinul nu are stocuri suficiente. Ne pare rau!" << '\n' << '\n';
+//        }
+//    }
+//
+//    void useItem(int index)
+//    {
+//        if (index >= 0 && index < inventory.size())
+//        {
+//            if (inventory[index].getName() == "Potion")
+//            {
+//                Potion potion = dynamic_cast<Potion&>(inventory[index]);
+//                potion.use(*this);
+//
+//                inventory[index].setQuantity(inventory[index].getQuantity() - 1);
+//
+//                if (inventory[index].getQuantity() == 0)
+//                {
+//                    inventory.erase(inventory.begin() + index);
+//                }
+//            }
+//            else if (inventory[index].getName() == "Sword")
+//            {
+//                Sword sword = dynamic_cast<Sword&>(inventory[index]);
+//                sword.use(*this);
+//            }
+//        }
+//        else std::cout << "Indexul itemului este invalid." << std::endl;
+//    }
+//
+//    void addHp(int hp)
+//    {
+//        this->hp += hp;
+//    }
+//
+//    void addAtk(int atk)
+//    {
+//        this->atk += atk;
+//    }
+//
+//    void takeDmg(int damage)
+//    {
+//        hp -= damage;
+//        if(hp < 0) hp = 0;
+//        std::cout << name << " a suferit " << damage << " damage. " << name << " are acum " << hp << " health." << std::endl;
+//    }
+//
+//    [[nodiscard]] bool isAlive() const
+//    {
+//        return hp > 0;
+//    }
+//
+//    void player_earn(int experience, int coins)
+//    {
+//        exp += experience;
+//        gold += coins;
+//    }
+//
+//    void LevelUp_Player()
+//    {
+//        const int expPerLvl = 1000;
+//        if (exp >= expPerLvl)
+//        {
+//            level++;
+//            exp -= expPerLvl;
+//            hp = lhp + 40;
+//            lhp = hp;
+//            atk += 5;
+//            std::cout << "Felicitari! Ai acum nivelul: " << level << "!" << '\n';
+//            if(level == 1)
+//            {
+//                std::cout << '\n' << "        Ai deblocat un nou Skill!        " << '\n';
+//                std::cout << '\n' << "---------------LowHp Skill---------------" << '\n';
+//                std::cout << '\n' << "Se pare ca acest Skill are " << lhps << " utilizari." << '\n';
+//                std::cout << '\n' << "Nu te teme! Utilizarile Skill-ului se refac la fiecare level-up!" << '\n';
+//                std::cout << '\n' << "Totusi foloseste-l cu grija. Numai atunci cand ai cu adevarata nevoie!" << '\n';
+//                std::cout << '\n' << "Stats: Acest Skill iti dubleaza hp-ul ramas si iti creste atacul cu 5 puncte." << '\n';
+//                std::cout << '\n' << '\n';
+//            }
+//            if(level >= 2)
+//            {
+//                std::cout << '\n' << "Skill use resetat!" << '\n' << '\n';
+//                lhps = 2;
+//            }
+//        }
+//    }
+//    ~Player()=default;
+//};
+//
+//std::ostream& operator<<(std::ostream& out, const Player& player) {
+//    out << "NAME: " << player.name << '\n';
+//    out << "HP: " << player.hp << "; DMG: " << player.atk << "; GOLD: " << player.gold << "; EXP: " << player.exp<< "; LEVEL: " << player.level << '\n';
+//    return out;
+//}
+//
+//std::istream& operator>>(std::istream& in, Player& pl) {
+//    in >> pl.name;
+//    return in;
+//}
+//
+//class Mob{
+//private:
+//    std::string name;
+//    int hp, ihp, atk, gold, exp;
+//public:
+//    Mob(std::string name, int hp, int atk, int gold, int exp)
+//            : name(std::move(name)), hp(hp), ihp(hp), atk(atk), gold(gold), exp(exp){}
+//
+//    Mob(const Mob& other) = default;
+//    Mob& operator=(const Mob& aux) = default;
+//
+//    Mob& operator+(const Mob& mob) const {
+//        Mob* result = new Mob(*this);
+//        result->name = "Evolved " + name;
+//        result->hp = mob.hp / 2 + hp;
+//        result->atk = mob.atk / 2 + atk;
+//        result->gold += gold;
+//        result->exp = mob.exp / 5 + exp;
+//        return *result;
+//    }
+//
+//    friend std::ostream& operator<<(std::ostream& out, const Mob& mob);
+//
+//    [[nodiscard]] std::string getName()const{return name;}
+//    [[nodiscard]] int getHp()const{return hp;}
+//    [[nodiscard]] int getAtk()const{return atk;}
+//    [[nodiscard]] int getGold()const{return gold;}
+//    [[nodiscard]] int getExp()const{return exp;}
+//
+//    void takeDmg(int damage)
+//    {
+//        if(hp >= damage)
+//            hp -= damage;
+//        else hp = 0;
+//        std::cout << name << " a suferit " << damage << " damage. " << name << " are acum " << hp << " health." << std::endl;
+//    }
+//
+//    [[nodiscard]] bool isAlive() const
+//    {
+//        return hp > 0;
+//    }
+//
+//    void reset_mob_hp()
+//    {
+//        hp = ihp;
+//    }
+//
+//    ~Mob()=default;
+//};
+//
+//std::ostream& operator<<(std::ostream& out, const Mob& mob) {
+//    out << "NAME: " << mob.name << '\n';
+//    out << "HP: " << mob.hp << "; DMG: " << mob.atk << "; EXP: " << mob.exp << '\n';
+//    return out;
+//}
+//
+//bool operator<(const Mob& mob1, const Mob& mob2) {
+//    return mob1.getHp() < mob2.getHp();
+//}
 
-class Item {
-protected:
-    std::string name;
-    int price, quantity, prop;
-public:
-    Item(std::string name, int prop, int price, int quantity)
-            : name(std::move(name)), price(price), quantity(quantity), prop(prop) {}
-
-    [[nodiscard]] const std::string& getName() const { return name; }
-    [[nodiscard]] int getPrice() const { return price; }
-    [[nodiscard]] int getQuantity() const { return quantity; }
-    [[nodiscard]] int getProp() const { return prop; }
-    void setQuantity(int nQ) { quantity = nQ; }
-    virtual ~Item() = default;
-};
-
-
-class Potion : public Item {
-private:
-    int hp;
-public:
-    Potion(std::string name, int hp, int price, int quantity) : Item(name, hp, price, quantity), hp(hp) {}
-    void use(Player& player);
-};
-
-class Sword : public Item {
-private:
-    int atk;
-public:
-    Sword(std::string name, int atk, int price, int quantity) : Item(name, atk, price, quantity), atk(atk) {}
-    void use(Player& player);
-};
-
-class Shop{
-private:
-    std::vector<Item> items;
-public:
-    void addPotion(const Potion& potion) {
-        items.push_back(potion);
-    }
-
-    void addSword(const Sword& sword) {
-        items.push_back(sword);
-    }
-
-    void displayItems() const
+void input_mobi(int n)
+{
+    std::vector<Mob> mobs;
+    for(int i = 0; i < n; i++)
     {
-        std::cout << "Shop:\n" << '\n';
-        for (const auto& item : items)
-        {
-            std::cout << item.getName() << " (" << item.getProp() << " hp)" << " - Pret: " << item.getPrice() << " (Stoc: " << item.getQuantity() << ")" << '\n';
-        }
-        std::cout << '\n';
+        std::string name;
+        int hp = 0, atk = 0, gold = 0, exp = 0;
+        std::cout<<'\n';
+        std::cout<<"NAME: ";
+        std::cin>>name;
+        std::cout<<" HP: ";
+        std::cin>>hp;
+        std::cout<<" DMG: ";
+        std::cin>>atk;
+        std::cout<<" GOLD: ";
+        std::cin>>gold;
+        std::cout<<" EXP: ";
+        std::cin>>exp;
+
+        Mob x(name,hp,atk,gold,exp);
+        mobs.push_back(x);
     }
-
-    [[nodiscard]] std::vector<Item>& getItems() {return items;}
-};
-
-class Player{
-private:
-    int hp = 500, exp = 0, level = 0, gold = 100, atk = 20, lhp = hp, lhps = 2;
-    int verify = 0;
-    std::vector<Item>inventory;
-    std::string name;
-public:
-    Player(std::string name, int hp, int atk, int gold, int exp, int level)
+    std::cout<<'\n';
+    for(int i = 0; i < n; i++)
     {
-        this->name = std::move(name);
-        this->hp = hp;
-        this->atk = atk;
-        this->gold = gold;
-        this->exp = exp;
-        this->level = level;
+        std::cout<<mobs[i]<<'\n';
     }
-
-    friend std::ostream& operator<<(std::ostream& out, const Player& player);
-    friend std::istream& operator>>(std::istream& in, Player& pl);
-
-    [[nodiscard]] std::string getName()const{return name;}
-    //[[nodiscard]] int getHp()const{return hp;}
-    [[nodiscard]] int getAtk()const{return atk;}
-    [[nodiscard]] int getLvl()const{return level;}
-    [[nodiscard]] int getVerify()const{return verify;}
-    [[nodiscard]] std::vector<Item> getInv()const{return inventory;}
-    [[nodiscard]] int getGold()const{return gold;}
-
-    void LowHp_Skill()
-    {
-        if(level >= 1 && hp <= 50 && lhps != 0)
-        {
-            std::cout << '\n' << "Hey, "<< name << "...mai ai putin hp...ai putea sa mori daca continui batalia." << '\n';
-            std::cout << '\n' << "Totusi te poate ajuta skill-ul deblocat (LowHp Skill)!" << '\n';
-            std::cout << '\n' << "Mai ai: " << lhps << " folosiri!" << '\n';
-            std::cout << '\n' << "Ce alegi?" << '\n';
-            std::cout << "1.Use Skill" << '\n';
-            std::cout << "2.Fugi" << '\n';
-            int interact;
-            std::cin >> interact;
-            switch (interact) {
-                case 1:
-                    hp+=hp;
-                    atk+=5;
-                    lhps--;
-                    break;
-                case 2:
-                    verify = interact;
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    void addToInventory(const Item& item)
-    {
-        bool found = false;
-        for(auto& eItem : inventory)
-        {
-            if(eItem.getName() == item.getName())
-            {
-                eItem.setQuantity(eItem.getQuantity() + 1);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            inventory.emplace_back(item.getName(), item.getProp(), item.getPrice(), 1);
-        }
-    }
-
-    void showInventory() const
-    {
-        std::cout << "Inventarul:\n";
-        for (int i = 0; i < inventory.size(); ++i)
-        {
-            std::cout << i + 1 << ". " << inventory[i].getName() << " (" << inventory[i].getQuantity() << ")" <<'\n';
-        }
-    }
-
-    std::vector<Item> getInventory() {
-        return inventory;
-    }
-
-    [[nodiscard]] int getInventorySize() const
-    {
-        return inventory.size();
-    }
-
-    [[nodiscard]] bool isInventoryEmpty() const
-    {
-        return inventory.empty();
-    }
-
-    void buyItem(const Item& item, Shop& shop)
-    {
-        if (gold >= item.getPrice() && item.getQuantity() != 0)
-        {
-            gold -= item.getPrice();
-            addToInventory(item);
-            std::cout << "Ai cumparat " << item.getName() << " cu succes!" << '\n' << '\n';
-
-            for (auto& shopItem : shop.getItems())
-            {
-                if (shopItem.getName() == item.getName())
-                {
-                    shopItem = Item(item.getName(), shopItem.getProp(), item.getPrice(), item.getQuantity() - 1);
-                    break;
-                }
-            }
-        }
-        else if(gold < item.getPrice())
-        {
-            std::cout << "Nu ai suficient aur pentru a cumpara " << item.getName() << "." << '\n' << '\n';
-        }
-        else if(item.getQuantity() == 0)
-        {
-            std:: cout << "Magazinul nu are stocuri suficiente. Ne pare rau!" << '\n' << '\n';
-        }
-    }
-
-    void useItem(int index)
-    {
-        if (index >= 0 && index < inventory.size())
-        {
-            if (inventory[index].getName() == "Potion")
-            {
-                Potion potion = dynamic_cast<Potion&>(inventory[index]);
-                potion.use(*this);
-
-                inventory[index].setQuantity(inventory[index].getQuantity() - 1);
-
-                if (inventory[index].getQuantity() == 0)
-                {
-                    inventory.erase(inventory.begin() + index);
-                }
-            }
-            else if (inventory[index].getName() == "Sword")
-            {
-                Sword sword = dynamic_cast<Sword&>(inventory[index]);
-                sword.use(*this);
-            }
-        }
-        else std::cout << "Indexul itemului este invalid." << std::endl;
-    }
-
-    void addHp(int hp)
-    {
-        this->hp += hp;
-    }
-
-    void addAtk(int atk)
-    {
-        this->atk += atk;
-    }
-
-    void takeDmg(int damage)
-    {
-        hp -= damage;
-        if(hp < 0) hp = 0;
-        std::cout << name << " a suferit " << damage << " damage. " << name << " are acum " << hp << " health." << std::endl;
-    }
-
-    [[nodiscard]] bool isAlive() const
-    {
-        return hp > 0;
-    }
-
-    void player_earn(int experience, int coins)
-    {
-        exp += experience;
-        gold += coins;
-    }
-
-    void LevelUp_Player()
-    {
-        const int expPerLvl = 1000;
-        if (exp >= expPerLvl)
-        {
-            level++;
-            exp -= expPerLvl;
-            hp = lhp + 40;
-            lhp = hp;
-            atk += 5;
-            std::cout << "Felicitari! Ai acum nivelul: " << level << "!" << '\n';
-            if(level == 1)
-            {
-                std::cout << '\n' << "        Ai deblocat un nou Skill!        " << '\n';
-                std::cout << '\n' << "---------------LowHp Skill---------------" << '\n';
-                std::cout << '\n' << "Se pare ca acest Skill are " << lhps << " utilizari." << '\n';
-                std::cout << '\n' << "Nu te teme! Utilizarile Skill-ului se refac la fiecare level-up!" << '\n';
-                std::cout << '\n' << "Totusi foloseste-l cu grija. Numai atunci cand ai cu adevarata nevoie!" << '\n';
-                std::cout << '\n' << "Stats: Acest Skill iti dubleaza hp-ul ramas si iti creste atacul cu 5 puncte." << '\n';
-                std::cout << '\n' << '\n';
-            }
-            if(level >= 2)
-            {
-                std::cout << '\n' << "Skill use resetat!" << '\n' << '\n';
-                lhps = 2;
-            }
-        }
-    }
-    ~Player()=default;
-};
-
-std::ostream& operator<<(std::ostream& out, const Player& player) {
-    out << "NAME: " << player.name << '\n';
-    out << "HP: " << player.hp << "; DMG: " << player.atk << "; GOLD: " << player.gold << "; EXP: " << player.exp<< "; LEVEL: " << player.level << '\n';
-    return out;
 }
 
-std::istream& operator>>(std::istream& in, Player& pl) {
-    in >> pl.name;
-    return in;
-}
-
-class Mob{
-protected:
-    std::string name;
-    int hp, ihp, atk, gold, exp;
-public:
-    Mob(std::string name, int hp, int atk, int gold, int exp)
-            : name(std::move(name)), hp(hp), ihp(hp), atk(atk), gold(gold), exp(exp){}
-
-    Mob(const Mob& other) = default;
-    Mob& operator=(const Mob& aux) = default;
-
-    Mob& operator+(const Mob& mob) const {
-        Mob* result = new Mob(*this);
-        result->name = "Evolved " + name;
-        result->hp = mob.hp / 2 + hp;
-        result->atk = mob.atk / 2 + atk;
-        result->gold += gold;
-        result->exp = mob.exp / 5 + exp;
-        return *result;
-    }
-
-    friend std::ostream& operator<<(std::ostream& out, const Mob& mob);
-
-    [[nodiscard]] std::string getName()const{return name;}
-    [[nodiscard]] int getHp()const{return hp;}
-    [[nodiscard]] int getAtk()const{return atk;}
-    [[nodiscard]] int getGold()const{return gold;}
-    [[nodiscard]] int getExp()const{return exp;}
-
-    void takeDmg(int damage)
-    {
-        if(hp >= damage)
-            hp -= damage;
-        else hp = 0;
-        std::cout << name << " a suferit " << damage << " damage. " << name << " are acum " << hp << " health." << std::endl;
-    }
-
-    [[nodiscard]] bool isAlive() const
-    {
-        return hp > 0;
-    }
-
-    void reset_mob_hp()
-    {
-        hp = ihp;
-    }
-
-    ~Mob()=default;
-};
-
-std::ostream& operator<<(std::ostream& out, const Mob& mob) {
-    out << "NAME: " << mob.name << '\n';
-    out << "HP: " << mob.hp << "; DMG: " << mob.atk << "; EXP: " << mob.exp << '\n';
-    return out;
-}
-
-bool operator<(const Mob& mob1, const Mob& mob2) {
-    return mob1.getHp() < mob2.getHp();
-}
-
-class MobInput : public Mob {
-public:
-//    MobInput(std::string name, int hp, int atk, int gold, int exp)
-//            : Mob(std::move(name), hp, atk, gold, exp) {}
-
-    static std::vector<Mob> input_mobi(int n) {
-        std::vector<Mob> mobs;
-        for(int i = 0; i < n; i++) {
-            std::string name;
-            int hp = 0, atk = 0, gold = 0, exp = 0;
-            std::cout << '\n';
-            std::cout << "NAME: ";
-            std::cin >> name;
-            std::cout << " HP: ";
-            std::cin >> hp;
-            std::cout << " DMG: ";
-            std::cin >> atk;
-            std::cout << " GOLD: ";
-            std::cin >> gold;
-            std::cout << " EXP: ";
-            std::cin >> exp;
-
-            mobs.emplace_back(name, hp, atk, gold, exp);
-        }
-        std::cout << '\n';
-        return mobs;
-    }
-};
-
-class Attack {
-public:
-    static void performAttack(Player& player, Mob& mob)
-    {
-        mob.takeDmg(player.getAtk());
-        if (mob.isAlive())
-        {
-            player.takeDmg(mob.getAtk());
-        }
-    }
-    ~Attack()=default;
-};
+//class Attack {
+//public:
+//    static void performAttack(Player& player, Mob& mob)
+//    {
+//        mob.takeDmg(player.getAtk());
+//        if (mob.isAlive())
+//        {
+//            player.takeDmg(mob.getAtk());
+//        }
+//    }
+//    ~Attack()=default;
+//};
 
 void fightEnemy(Player& player, Mob& currentEnemy)
 {
@@ -410,17 +416,17 @@ void fightEnemy(Player& player, Mob& currentEnemy)
     }
 }
 
-void Potion::use(Player& player) {
-    int hpToAdd = getProp();
-    std::cout << "Ai folosit potiunea " << getName() << ". Aceasta iti adauga " << hpToAdd << " hp." << std::endl;
-    player.addHp(hpToAdd);
-}
-
-void Sword::use(Player& player) {
-    int atkToAdd = getProp();
-    std::cout << "Ai echipat sabia " << getName() << ".\n";
-    player.addAtk(atkToAdd);
-}
+//void Potion::use(Player& player) {
+//    int hpToAdd = getProp();
+//    std::cout << "Ai folosit potiunea " << getName() << ". Aceasta iti adauga " << hpToAdd << " hp." << std::endl;
+//    player.addHp(hpToAdd);
+//}
+//
+//void Sword::use(Player& player) {
+//    int atkToAdd = getProp();
+//    std::cout << "Ai echipat sabia " << getName() << ".\n";
+//    player.addAtk(atkToAdd);
+//}
 
 int main()
 {
@@ -456,7 +462,7 @@ int main()
     int n;
     std::cin>>n;
     std::cout<<'\n';
-    std::vector<Mob> mobs = MobInput::input_mobi(n);
+    input_mobi(n);
     std::cout<<'\n'<<"Revenim la joc (1.Start; 2.Exit;) ... ";
     std::vector<Mob> enemies = {
             Mob("Cave Zombie", 100, 10, 35, 150),
@@ -518,7 +524,7 @@ int main()
                         int choice;
                         std::cin >> choice;
                         if (choice >= 1 && choice <= player.getInventorySize()) {
-                            player.useItem(choice - 1); // Folosește poțiunea selectată din inventar
+                            player.useItem(choice - 1);
                         } else {
                             std::cout << "Selectare invalida." << '\n';
                         }

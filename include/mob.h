@@ -6,41 +6,36 @@
 #define OOP_MOB_H
 
 #include <iostream>
-
-class MobInput {
-public:
-    virtual void handleInput() const = 0;
-};
+#include <string>
 
 class Mob {
 private:
     std::string name;
-    int health;
-    int attackDamage;
-    int defense;
+    int hp, ihp, atk, gold, exp;
 
 public:
-    Mob(std::string name, int health, int attackDamage, int defense);
-    ~Mob();
+    Mob(std::string name, int hp, int atk, int gold, int exp);
 
-    std::string getName() const;
-    int getHealth() const;
-    void setHealth(int health);
-    int getAttackDamage() const;
-    int getDefense() const;
+    Mob(const Mob& other) = default;
+    Mob& operator=(const Mob& aux) = default;
 
-    void takeDamage(int amount);
-    void attack(Mob* target);
+    Mob& operator+(const Mob& mob) const;
+
+    friend std::ostream& operator<<(std::ostream& out, const Mob& mob);
+
+    [[nodiscard]] std::string getName() const;
+    [[nodiscard]] int getHp() const;
+    [[nodiscard]] int getAtk() const;
+    [[nodiscard]] int getGold() const;
+    [[nodiscard]] int getExp() const;
+
+    void takeDmg(int damage);
+    [[nodiscard]] bool isAlive() const;
+    void reset_mob_hp();
+
+    ~Mob() = default;
 };
 
-class Goblin : public Mob {
-public:
-    Goblin();
-};
-
-class Troll : public Mob {
-public:
-    Troll();
-};
+bool operator<(const Mob& mob1, const Mob& mob2);
 
 #endif //OOP_MOB_H

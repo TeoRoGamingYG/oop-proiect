@@ -4,7 +4,7 @@
 #include "Item.h"
 
 Item::Item(std::string name, int prop, int price, int quantity)
-        : name(std::move(name)), prop(prop), price(price), quantity(quantity) {}
+        : name(std::move(name)), price(price), quantity(quantity), prop(prop) {}
 
 const std::string& Item::getName() const { return name; }
 int Item::getPrice() const { return price; }

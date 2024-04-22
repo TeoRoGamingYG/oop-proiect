@@ -1,7 +1,6 @@
 //
 // Created by Teo on 4/21/2024.
 //
-
 #ifndef OOP_PLAYER_H
 #define OOP_PLAYER_H
 
@@ -9,6 +8,8 @@
 #include <string>
 #include "item.h"
 #include "shop.h"
+#include "sword.h"
+#include "potion.h"
 
 class Player {
 private:
@@ -27,15 +28,15 @@ public:
     [[nodiscard]] int getAtk() const;
     [[nodiscard]] int getLvl() const;
     [[nodiscard]] int getVerify() const;
-    [[nodiscard]] std::vector<Item> getInv() const;
+    //[[nodiscard]] std::vector<Item> getInv() const;
     [[nodiscard]] int getGold() const;
 
     void LowHp_Skill();
     void addToInventory(const Item& item);
     void showInventory() const;
-    std::vector<Item> getInventory();
-    int getInventorySize() const;
-    bool isInventoryEmpty() const;
+    //std::vector<Item> getInventory();
+    [[nodiscard]] int getInventorySize() const;
+    [[nodiscard]] bool isInventoryEmpty() const;
     void buyItem(const Item& item, Shop& shop);
     void useItem(int index);
     void addHp(int hp);

@@ -3,21 +3,12 @@
 //
 #include "attack.h"
 
-void attack(Player* attacker, Mob* target) {
-    int damage = attacker->getAttackDamage() - target->getDefense();
-    if (damage < 0) {
-        damage = 0;
+static void performAttack(Player& player, Mob& mob)
+{
+    mob.takeDmg(player.getAtk());
+    if (mob.isAlive())
+    {
+        player.takeDmg(mob.getAtk());
     }
-    std::cout << attacker->getName() << " attacks " << target->getName() << " for " << damage << " damage." << std::endl;
-    target->takeDamage(damage);
-}
-
-void attack(Mob* attacker, Player* target) {
-    int damage = attacker->getAttackDamage() - target->getDefense();
-    if (damage < 0) {
-        damage = 0;
-    }
-    std::cout << attacker->getName() << " attacks " << target->getName() << " for " << damage << " damage." << std::endl;
-    target->takeDamage(damage);
 }
 

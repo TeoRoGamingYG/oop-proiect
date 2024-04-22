@@ -1,8 +1,7 @@
 #include "Player.h"
-#include "Shop.h"
-#include "Item.h"
 #include "potion.h"
 #include "sword.h"
+#include "shop.h"
 
 Player::Player(std::string name, int hp, int atk, int gold, int exp, int level) {
     this->name = std::move(name);
@@ -40,10 +39,6 @@ int Player::getVerify() const {
     return verify;
 }
 
-std::vector<Item> Player::getInv() const {
-    return inventory;
-}
-
 int Player::getGold() const {
     return gold;
 }
@@ -74,7 +69,8 @@ void Player::LowHp_Skill() {
     }
 }
 
-void Player::addToInventory(const Item& item) {
+void Player::addToInventory(const Item& item)
+{
     bool found = false;
     for(auto& eItem : inventory)
     {
@@ -96,10 +92,6 @@ void Player::showInventory() const {
     {
         std::cout << i + 1 << ". " << inventory[i].getName() << " (" << inventory[i].getQuantity() << ")" <<'\n';
     }
-}
-
-std::vector<Item> Player::getInventory() {
-    return inventory;
 }
 
 int Player::getInventorySize() const {

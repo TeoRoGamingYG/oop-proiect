@@ -1,31 +1,24 @@
 //
 // Created by Teo on 4/21/2024.
 //
-#include <iostream>
-#include "shop.h"
+#include "Shop.h"
 
-Shop::Shop() {}
-
-void Shop::addItem(Item* item) {
-    stock.push_back(item);
+void Shop::addPotion(const Potion& potion) {
+    items.push_back(potion);
 }
 
-void Shop::displayStock() const {
-    std::cout << "Shop Stock:" << std::endl;
-    for (size_t i = 0; i < stock.size(); ++i) {
-        std::cout << "[" << i << "] " << stock[i]->getName() << std::endl;
+void Shop::addSword(const Sword& sword) {
+    items.push_back(sword);
+}
+
+void Shop::displayItems() const {
+    std::cout << "Shop:\n\n";
+    for (const auto& item : items) {
+        std::cout << item.getName() << " (" << item.getProp() << " hp)" << " - Pret: " << item.getPrice() << " (Stoc: " << item.getQuantity() << ")\n";
     }
+    std::cout << '\n';
 }
 
-Item* Shop::buyItem(int index) {
-    if (index >= 0 && index < stock.size()) {
-        Item* item = stock[index];
-        stock.erase(stock.begin() + index);
-        return item;
-    } else {
-        std::cout << "Invalid item index!" << std::endl;
-        return nullptr;
-    }
+std::vector<Item>& Shop::getItems() {
+    return items;
 }
-
-std::vector<Item>& Shop::getItems() {return getItems();}

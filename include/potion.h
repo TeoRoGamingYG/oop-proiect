@@ -12,7 +12,7 @@ class Potion : public Item {
 private:
     int hp;
 public:
-    Potion(std::string name, int hp, int price, int quantity);
+    Potion([[maybe_unused]] std::string name, int hp, int price, int quantity);
     void use(Player& player);
 };
 

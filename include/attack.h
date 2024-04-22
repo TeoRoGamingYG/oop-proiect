@@ -5,10 +5,13 @@
 #ifndef OOP_ATTACK_H
 #define OOP_ATTACK_H
 
-#include "player.h"
+#include "Player.h"
 #include "mob.h"
 
-void attack(Player* attacker, Mob* target);
-void attack(Mob* attacker, Player* target);
+class Attack {
+public:
+    static void performAttack(Player& player, Mob& mob);
+    ~Attack()=default;
+};
 
 #endif //OOP_ATTACK_H

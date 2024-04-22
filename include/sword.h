@@ -12,7 +12,7 @@ class Sword : public Item {
 private:
     int atk;
 public:
-    Sword(std::string name, int atk, int price, int quantity);
+    Sword([[maybe_unused]] std::string name, int atk, int price, int quantity);
     void use(Player& player);
 };
 

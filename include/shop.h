@@ -8,9 +8,9 @@
 #include <iostream>
 #include <vector>
 #include "Player.h"
-#include "item.h"
-#include "potion.h"
-#include "sword.h"
+#include "Item.h"
+#include "Potion.h"
+#include "Sword.h"
 
 class Shop {
 private:

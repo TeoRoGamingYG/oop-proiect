@@ -1,7 +1,7 @@
 //
 // Created by Teo on 4/21/2024.
 //
-#include "attack.h"
+#include "Attack.h"
 
 static void performAttack(Player& player, Mob& mob)
 {

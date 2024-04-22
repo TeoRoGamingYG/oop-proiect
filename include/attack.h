@@ -6,7 +6,7 @@
 #define OOP_ATTACK_H
 
 #include "Player.h"
-#include "mob.h"
+#include "Mob.h"
 
 class Attack {
 public:

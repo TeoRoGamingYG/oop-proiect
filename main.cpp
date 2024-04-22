@@ -3,13 +3,13 @@
 #include <string>
 #include <ctime>
 #include <vector>
-#include "item.h"
-#include "potion.h"
-#include "sword.h"
-#include "shop.h"
+#include "Item.h"
+#include "Potion.h"
+#include "Sword.h"
+#include "Shop.h"
 #include "Player.h"
-#include "mob.h"
-#include "attack.h"
+#include "Mob.h"
+#include "Attack.h"
 
 //class Player;
 //

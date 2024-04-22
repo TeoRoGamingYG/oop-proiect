@@ -7,10 +7,10 @@
 
 #include <iostream>
 #include <vector>
-#include "Player.h"
-#include "Item.h"
-#include "Potion.h"
-#include "Sword.h"
+#include "player.h"
+#include "item.h"
+#include "potion.h"
+#include "sword.h"
 
 class Shop {
 private:

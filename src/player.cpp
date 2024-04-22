@@ -1,7 +1,7 @@
-#include "Player.h"
-#include "Potion.h"
-#include "Sword.h"
-#include "Shop.h"
+#include "player.h"
+#include "potion.h"
+#include "sword.h"
+#include "shop.h"
 
 Player::Player(std::string name, int hp, int atk, int gold, int exp, int level) {
     this->name = std::move(name);

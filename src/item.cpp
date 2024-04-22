@@ -1,7 +1,7 @@
 //
 // Created by Teo on 4/21/2024.
 //
-#include "Item.h"
+#include "item.h"
 
 Item::Item(std::string name, int prop, int price, int quantity)
         : name(std::move(name)), price(price), quantity(quantity), prop(prop) {}

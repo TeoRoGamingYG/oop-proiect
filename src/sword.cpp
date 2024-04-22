@@ -3,8 +3,8 @@
 //
 #include <utility>
 
-#include "Sword.h"
-#include "Player.h"
+#include "sword.h"
+#include "player.h"
 Sword::Sword([[maybe_unused]] std::string name, int atk, int price, int quantity) : Item(std::move(name), atk, price, quantity), atk(atk) {}
 
 void Sword::use(Player& player) {

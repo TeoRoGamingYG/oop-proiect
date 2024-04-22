@@ -5,8 +5,8 @@
 #ifndef OOP_ATTACK_H
 #define OOP_ATTACK_H
 
-#include "Player.h"
-#include "Mob.h"
+#include "player.h"
+#include "mob.h"
 
 class Attack {
 public:

@@ -5,8 +5,8 @@
 #ifndef OOP_SWORD_H
 #define OOP_SWORD_H
 
-#include "Item.h"
-#include "Player.h"
+#include "item.h"
+#include "player.h"
 
 class Sword : public Item {
 private:

@@ -6,10 +6,10 @@
 
 #include <iostream>
 #include <string>
-#include "Item.h"
-#include "Shop.h"
-#include "Sword.h"
-#include "Potion.h"
+#include "item.h"
+#include "shop.h"
+#include "sword.h"
+#include "potion.h"
 
 class Player {
 private:

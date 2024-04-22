@@ -1,7 +1,7 @@
 //
 // Created by Teo on 4/21/2024.
 //
-#include "Shop.h"
+#include "shop.h"
 
 void Shop::addPotion(const Potion& potion) {
     items.push_back(potion);

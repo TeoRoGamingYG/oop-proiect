@@ -191,7 +191,7 @@ int main()
                         std::cout << "Ce item vrei sa folosesti?" << '\n';
                         int choice;
                         std::cin >> choice;
-                        if (choice >= 1 && choice <= player.getInventorySize()) {
+                        if (choice >= 1) {
                             player.useItem(choice - 1);
                         } else {
                             std::cout << "Selectare invalida." << '\n';

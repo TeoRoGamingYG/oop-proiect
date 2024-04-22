@@ -94,9 +94,9 @@ void Player::showInventory() const {
     }
 }
 
-int Player::getInventorySize() const {
-    return inventory.size();
-}
+//int Player::getInventorySize() const {
+//    return inventory.size();
+//}
 
 bool Player::isInventoryEmpty() const {
     return inventory.empty();
@@ -152,14 +152,14 @@ void Player::useItem(int index) {
     else std::cout << "Indexul itemului este invalid." << std::endl;
 }
 
-void Player::addHp(int hp)
+void Player::addHp(int hpp)
 {
-    this->hp += hp;
+    this->hp += hpp;
 }
 
-void Player::addAtk(int atk)
+void Player::addAtk(int atkk)
 {
-    this->atk += atk;
+    this->atk += atkk;
 }
 
 void Player::takeDmg(int damage)

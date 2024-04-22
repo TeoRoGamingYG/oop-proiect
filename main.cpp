@@ -103,11 +103,11 @@ int main()
     std::cout<<"    P.S: Ai grija sa nu opresti rularea programului ca te ai dus...pierzi tot progresul din pacate ://"<<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Alege numele tau: ";
-    Player player("", 500, 20, 100, 0, 0);
-    Potion healthPotionSmall("Small Health Potion", 25, 100, 3);
-    Potion healthPotionMedium("Medium Health Potion", 40, 150, 3);
-    Potion healthPotionLarge("Large Health Potion", 75, 225, 3);
-    Sword silverSword("Silver Sword", 20, 500, 1);
+    static Player player("", 500, 20, 100, 0, 0);
+    static Potion healthPotionSmall("Small Health Potion", 25, 100, 3);
+    static Potion healthPotionMedium("Medium Health Potion", 40, 150, 3);
+    static Potion healthPotionLarge("Large Health Potion", 75, 225, 3);
+    static Sword silverSword("Silver Sword", 20, 500, 1);
     Shop shop;
     shop.addPotion(healthPotionSmall);
     shop.addPotion(healthPotionMedium);

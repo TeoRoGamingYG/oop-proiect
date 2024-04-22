@@ -27,7 +27,7 @@ public:
     friend std::istream& operator>>(std::istream& in, Player& pl);
 
     [[nodiscard]] std::string getName() const;
-    //[[nodiscard]] int getHp() const;
+    [[nodiscard]] int getHp() const;
     [[nodiscard]] int getAtk() const;
     [[nodiscard]] int getLvl() const;
     [[nodiscard]] int getVerify() const;

@@ -114,6 +114,11 @@ int main()
     shop.addPotion(healthPotionLarge);
     shop.addSword(silverSword);
     std::cin>>player;
+    std::string exit="stop";
+    if(player.getName() == exit)
+    {
+        return 0;
+    }
     std::cout<<'\n'<<'\n'<<"Salut "<< player.getName() <<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Acum cu interactiunile:"<<'\n';

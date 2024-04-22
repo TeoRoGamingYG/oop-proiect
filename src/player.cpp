@@ -142,10 +142,10 @@ void Player::useItem(int index) {
 
             inventory[index].setQuantity(inventory[index].getQuantity() - 1);
 
-            if (inventory[index].getQuantity() == 0)
-            {
-                inventory.erase(inventory.begin() + index);
-            }
+//            if (inventory[index].getQuantity() == 0)
+//            {
+//                inventory.erase(inventory.begin() + index);
+//            }
         }
         else if (inventory[index].getName() == "Sword")
         {

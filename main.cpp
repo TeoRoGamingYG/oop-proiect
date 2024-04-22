@@ -217,17 +217,17 @@ int main()
                             int ok = 1;
                             while(player.getGold() >= shopItems[0].getPrice() && ok == 1)
                             {
-                                std::cout << "1." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
-                                std::cout << "2." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
-                                std::cout << "3." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
-                                std::cout << "4." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
-                                std::cout << "0.Exit Shop" << '\n';
+                                std::cout << "0." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
+                                std::cout << "1." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
+                                std::cout << "2." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
+                                std::cout << "3." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
+                                std::cout << "4.Exit Shop" << '\n';
                                 int i;
                                 std::cin >> i;
-                                if(i == 0) break;
+                                if(i == 4) break;
                                 if(!shopItems.empty())
                                 {
-                                    const Item& itemToBuy = shopItems[i-1];
+                                    const Item& itemToBuy = shopItems[i];
                                     player.buyItem(itemToBuy, shop);
                                 }
                                 if(player.getGold() < shopItems[0].getPrice())
@@ -291,17 +291,17 @@ int main()
                         int ok = 1;
                         while(player.getGold() >= shopItems[0].getPrice() && ok == 1)
                         {
-                            std::cout << "1." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
-                            std::cout << "2." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
-                            std::cout << "3." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
-                            std::cout << "4." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
-                            std::cout << "0.Exit Shop" << '\n';
+                            std::cout << "0." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
+                            std::cout << "1." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
+                            std::cout << "2." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
+                            std::cout << "3." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
+                            std::cout << "4.Exit Shop" << '\n';
                             int i;
                             std::cin >> i;
-                            if(i == 0) break;
+                            if(i == 4) break;
                             if(!shopItems.empty())
                             {
-                                const Item& itemToBuy = shopItems[i-1];
+                                const Item& itemToBuy = shopItems[i];
                                 player.buyItem(itemToBuy, shop);
                             }
                             if(player.getGold() < shopItems[0].getPrice())

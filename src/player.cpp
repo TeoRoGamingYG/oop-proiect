@@ -27,6 +27,10 @@ std::string Player::getName() const {
     return name;
 }
 
+//int Player::getHp() const {
+//    return hp;
+//}
+
 int Player::getAtk() const {
     return atk;
 }

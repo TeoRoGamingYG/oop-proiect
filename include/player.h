@@ -27,6 +27,7 @@ public:
     friend std::istream& operator>>(std::istream& in, Player& pl);
 
     [[nodiscard]] std::string getName() const;
+    //[[nodiscard]] int getHp() const;
     [[nodiscard]] int getAtk() const;
     [[nodiscard]] int getLvl() const;
     [[nodiscard]] int getVerify() const;
@@ -35,7 +36,7 @@ public:
     void LowHp_Skill();
     void addToInventory(const Item& item);
     void showInventory() const;
-    [[nodiscard]] int getInventorySize() const;
+    //[[nodiscard]] int getInventorySize() const;
     [[nodiscard]] bool isInventoryEmpty() const;
     void addHp(int hp);
     void addAtk(int atk);

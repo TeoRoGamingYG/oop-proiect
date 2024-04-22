@@ -5,6 +5,8 @@
 #ifndef OOP_SWORD_H
 #define OOP_SWORD_H
 
+#include <utility>
+
 #include "item.h"
 class Player;
 
@@ -12,8 +14,8 @@ class Sword : public Item {
 private:
     int atk;
 public:
-    Sword([[maybe_unused]] std::string name, int atk, int price, int quantity);
+    Sword(std::string name, int atk, int price, int quantity) : Item(std::move(name), atk, price, quantity), atk(atk) {};
     void use(Player& player);
 };
 
-#endif //OOP_SWORD_H
+#endif

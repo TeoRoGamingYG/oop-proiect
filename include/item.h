@@ -8,14 +8,14 @@ class Player;
 template <typename N, typename P>
 class Item {
 protected:
-    N name;
+    N name1;
     P price; P prop; P quantity; P initQuantity;
 
 public:
-    Item(N name, P prop, P price, P quantity, P initQuantity)
-            : name(std::move(name)), price(price), prop(prop), quantity(quantity), initQuantity(initQuantity) {}
+    Item(N name1, P prop, P price, P quantity, P initQuantity)
+            : name1(std::move(name1)), price(price), prop(prop), quantity(quantity), initQuantity(initQuantity) {}
 
-    [[nodiscard]] N& getName() { return name; }
+    [[nodiscard]] N& getName() { return name1; }
     [[nodiscard]] P getPrice() { return price; }
     [[nodiscard]] P getQuantity() { return quantity; }
     [[nodiscard]] P getinitQuantity() { return initQuantity; }

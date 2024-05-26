@@ -9,11 +9,11 @@ class Player;
 template <typename N, typename P>
 class Sword : public Item<N, P> {
 private:
-    N name;
+    N name3;
     P atk;
 public:
-    Sword(N name, P atk, P price, P quantity, P initQuantity)
-            : Item<N, P>(std::move(name), atk, price, quantity, initQuantity), atk(atk) {}
+    Sword(N name3, P atk, P price, P quantity, P initQuantity)
+            : Item<N, P>(std::move(name3), atk, price, quantity, initQuantity), atk(atk) {}
 
     void use(Player& player) {
         int atkToAdd = getAtk();
@@ -26,7 +26,7 @@ public:
     }
 
     N getName() const{
-        return name;
+        return name3;
     }
 };
 

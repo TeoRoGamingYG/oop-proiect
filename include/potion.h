@@ -11,11 +11,11 @@ template <typename N, typename P>
 
 class Potion : public Item<N, P> {
 private:
-    N name;
+    N name2;
     P hp;
 public:
-    Potion(N name, P hp, P price, P quantity, P initQuantity)
-            : Item<N, P>(std::move(name), hp, price, quantity, initQuantity), hp(hp) {}
+    Potion(N name2, P hp, P price, P quantity, P initQuantity)
+            : Item<N, P>(std::move(name2), hp, price, quantity, initQuantity), hp(hp) {}
 
     void use(Player& player)
     {
@@ -32,7 +32,7 @@ public:
     }
 
     N getName() const{
-        return name;
+        return name2;
     }
 };
 

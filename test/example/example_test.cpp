@@ -11,8 +11,8 @@ TEST(SuiteName, TestName) {
 }
 
 TEST(SuiteName, test_potiune) {
-    Potion healthpotion("Potiune", 20, 100, 3, 3);
     Player player("Gogu", 500, 20, 100, 0, 0);
+    Potion<std::string, int> healthpotion("Potiune", 20, 100, 3, 3);
     int initialHP = player.getHp();
     healthpotion.use(player);
     int newHP = player.getHp();
@@ -20,8 +20,8 @@ TEST(SuiteName, test_potiune) {
 }
 
 TEST(SuiteName, test_sabie) {
-    Sword sabie("SabieFer", 20, 30, 1, 1);
     Player player("Gogu", 500, 20, 100, 0, 0);
+    Sword<std::string, int> sabie("SabieFer", 20, 30, 1, 1);
     int initialAtk = player.getAtk();
     sabie.use(player);
     int newAtk = player.getAtk();

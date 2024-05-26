@@ -31,7 +31,7 @@ public:
         return hp;
     }
 
-    N getName(){
+    N getName() const{
         return name;
     }
 };

@@ -25,7 +25,7 @@ public:
         return atk;
     }
 
-    N getName() {
+    N getName() const{
         return name;
     }
 };

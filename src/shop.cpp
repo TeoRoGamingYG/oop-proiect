@@ -1,26 +1,40 @@
-//
-// Created by Teo on 4/21/2024.
-//
 #include <iostream>
+#include "potion.h"
+#include "sword.h"
 #include "shop.h"
+#include "item.h"
 
-void Shop::addPotion(const Potion& potion) {
-    items.push_back(potion);
+std::vector<Item<std::string, int>*> Shop::items;
+
+void Shop::addPotion(Potion<std::string, int>& potion) {
+    items.push_back(new Potion(potion));
 }
 
-void Shop::addSword(const Sword& sword) {
-    items.push_back(sword);
+void Shop::addSword(Sword<std::string, int>& sword) {
+    items.push_back(new Sword(sword));
 }
 
-void Shop::displayItems() const {
+void Shop::displayItems() {
     std::cout << "Shop:\n\n";
-    for (const auto& item : items) {
-        std::cout << item.getName() << " (" << item.getProp() << " hp)" << " - Pret: " << item.getPrice() << " (Stoc: " << item.getQuantity() << ")\n";
+    for (auto& item : items) {
+        std::cout << item->getName() << " (" << item->getProp() << " pct)" << " - Pret: " << item->getPrice() << " (Stoc: " << item->getQuantity() << ")\n";
     }
     std::cout << '\n';
 }
 
-std::vector<Item>& Shop::getItems() {
+void Shop::resetShop(){
+    for (auto& item : items) {
+        item->resetQuantity();
+    }
+}
+
+std::vector<Item<std::string, int>*>& Shop::getItems() {
     return items;
 }
 
+Shop::~Shop() {
+    for (auto item : items) {
+        delete item;
+    }
+    items.clear();
+}

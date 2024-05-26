@@ -1,6 +1,3 @@
-//
-// Created by Teo on 4/21/2024.
-//
 #include <iostream>
 #include "mob.h"
 
@@ -19,7 +16,7 @@ Mob& Mob::operator+(const Mob& mob) const {
 
 std::ostream& operator<<(std::ostream& out, const Mob& mob) {
     out << "NAME: " << mob.name << '\n';
-    out << "HP: " << mob.hp << "; DMG: " << mob.atk << "; EXP: " << mob.exp << '\n';
+    out << "HP: " << mob.hp << "; DMG: " << mob.atk << "; GOLD: " << mob.gold << "; EXP: " << mob.exp << '\n';
     return out;
 }
 

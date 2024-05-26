@@ -1,24 +1,25 @@
-//
-// Created by Teo on 4/21/2024.
-//
-
 #ifndef OOP_SHOP_H
 #define OOP_SHOP_H
 
 #include <vector>
 #include "item.h"
-#include "potion.h"
-#include "sword.h"
+
+template <typename N, typename P>
+class Potion;
+
+template <typename N, typename P>
+class Sword;
 
 class Shop {
 private:
-    std::vector<Item> items;
-
+    static std::vector<Item<std::string, int>*> items;
 public:
-    void addPotion(const Potion& potion);
-    void addSword(const Sword& sword);
-    void displayItems() const;
-    std::vector<Item>& getItems();
+    static void addPotion(Potion<std::string, int>& potion);
+    static void addSword(Sword<std::string, int>& sword);
+    static void displayItems();
+    static void resetShop();
+    static std::vector<Item<std::string, int>*>& getItems();
+    ~Shop();
 };
 
 #endif //OOP_SHOP_H

@@ -1,23 +1,34 @@
-//
-// Created by Teo on 4/21/2024.
-//
-
 #ifndef OOP_SWORD_H
 #define OOP_SWORD_H
 
-#include <utility>
-
+#include <iostream>
 #include "item.h"
+
+// Forward declaration pentru clasa Player
 class Player;
 
-class Sword : public Item {
+template <typename N, typename P>
+class Sword : public Item<N, P> {
 private:
-    int atk;
+    N name;
+    P atk;
 public:
-    Sword(std::string name, int atk, int price, int quantity) : Item(std::move(name), atk, price, quantity), atk(atk) {};
-    void use(Player& player);
-    [[nodiscard]] int getAtk() const;
-    //[[nodiscard]] std::string getName() const;
+    Sword(N name, P atk, P price, P quantity, P initQuantity)
+            : Item<N, P>(std::move(name), atk, price, quantity, initQuantity), atk(atk) {}
+
+    void use(Player& player) {
+        int atkToAdd = getAtk();
+        std::cout << "Ai echipat sabia " << getName() << ".\n";
+        player.addAtk(atkToAdd);
+    }
+
+    P getAtk() {
+        return atk;
+    }
+
+    N getName() {
+        return name;
+    }
 };
 
-#endif
+#endif // OOP_SWORD_H

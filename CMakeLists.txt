@@ -124,7 +124,9 @@ add_executable(${PROJECT_NAME} main.cpp ${SOURCES}
         include/mob.h
         include/attack.h
         include/potion.h
-        include/sword.h)
+        include/sword.h
+        include/itemfactory.h
+)
 
 ###############################################################################
 

@@ -1,9 +1,10 @@
 #include "player.h"
-#include "potion.h"
-#include "sword.h"
 #include "shop.h"
+#include "item.h"
 
-Player::Player(std::string name, int hp, int atk, int gold, int exp, int level) {
+
+
+Player::Player(std::basic_string<char> name, int hp, int atk, int gold, int exp, int level) {
     this->name = std::move(name);
     this->hp = hp;
     this->atk = atk;
@@ -23,7 +24,7 @@ std::istream& operator>>(std::istream& in, Player& pl) {
     return in;
 }
 
-std::string Player::getName() const {
+std::basic_string<char> Player::getName() const {
     return name;
 }
 
@@ -73,7 +74,7 @@ void Player::LowHp_Skill() {
     }
 }
 
-void Player::addToInventory(const Item& item)
+void Player::addToInventory(Item<std::string, int>& item)
 {
     bool found = false;
     for(auto& eItem : inventory)
@@ -86,11 +87,11 @@ void Player::addToInventory(const Item& item)
         }
     }
     if (!found) {
-        inventory.emplace_back(item.getName(), item.getProp(), item.getPrice(), 1);
+        inventory.emplace_back(item.getName(), item.getProp(), item.getPrice(), 1, item.getinitQuantity());
     }
 }
 
-void Player::showInventory() const {
+void Player::showInventory() {
     std::cout << "Inventarul:\n";
     for (unsigned int i = 0; i < inventory.size(); ++i)
     {
@@ -106,7 +107,7 @@ bool Player::isInventoryEmpty() const {
     return inventory.empty();
 }
 
-void Player::buyItem(const Item& item, Shop& shop) {
+void Player::buyItem(Item<std::string, int>& item, Shop& shop) {
     if (gold >= item.getPrice() && item.getQuantity() != 0)
     {
         gold -= item.getPrice();
@@ -115,9 +116,9 @@ void Player::buyItem(const Item& item, Shop& shop) {
 
         for (auto& shopItem : shop.getItems())
         {
-            if (shopItem.getName() == item.getName())
+            if (shopItem->getName() == item.getName())
             {
-                shopItem = Item(item.getName(), shopItem.getProp(), item.getPrice(), item.getQuantity() - 1);
+                *shopItem = Item(item.getName(), shopItem->getProp(), item.getPrice(), item.getQuantity() - 1, item.getinitQuantity());
                 break;
             }
         }
@@ -132,30 +133,6 @@ void Player::buyItem(const Item& item, Shop& shop) {
     }
 }
 
-void Player::useItem(int index) {
-    if (index >= 0 && unsigned(index) < inventory.size())
-    {
-        if (inventory[index].getName() == "Potion")
-        {
-            Potion potion = dynamic_cast<Potion&>(inventory[index]);
-            potion.use(*this);
-
-            inventory[index].setQuantity(inventory[index].getQuantity() - 1);
-
-//            if (inventory[index].getQuantity() == 0)
-//            {
-//                inventory.erase(inventory.begin() + index);
-//            }
-        }
-        else if (inventory[index].getName() == "Sword")
-        {
-            Sword sword = dynamic_cast<Sword&>(inventory[index]);
-            sword.use(*this);
-        }
-    }
-    else std::cout << "Indexul itemului este invalid." << std::endl;
-}
-
 void Player::addHp(int hpp)
 {
     this->hp += hpp;
@@ -165,6 +142,77 @@ void Player::addAtk(int atkk)
 {
     this->atk += atkk;
 }
+
+void Player::useItem(int index) {
+    if (index >= 0 && unsigned(index) < inventory.size()) {
+        std::cout << "Item selectat: " << inventory[index].getName() << std::endl;
+
+        if (inventory[index].getName() == "Small Health Potion" || inventory[index].getName() == "Medium Health Potion" || inventory[index].getName() == "Large Health Potion" || inventory[index].getName() == "Random Healing Potion")
+        {
+            std::cout << "Se apeleaza metoda Potion::use()" << std::endl;
+            Player::addHp(inventory[index].getProp());
+            std::cout << "Hp-ul tau dupa utilizarea potiunii:" << Player::getHp() << "hp." << std::endl;
+        }
+        else if (inventory[index].getName() == "Silver Sword" || inventory[index].getName() == "Custom Sword") {
+            std::cout << "Se apeleaza metoda Sword::use()" << std::endl;
+            Player::addAtk(inventory[index].getProp());
+            std::cout << "Puterea ta dupa utilizarea sabiei:" << Player::getAtk() << "dmg." << std::endl;
+        }
+
+        inventory[index].setQuantity(inventory[index].getQuantity() - 1);
+
+        if (inventory[index].getQuantity() == 0) {
+            inventory.erase(inventory.begin() + index);
+        }
+    } else {
+        std::cout << "Indexul itemului este invalid." << std::endl;
+    }
+}
+
+//void Player::useItem(int index) {
+//    if (index >= 0 && unsigned(index) < inventory.size()) {
+//        std::cout << "Item selectat: " << inventory[index].getName() << std::endl; // Mesaj pentru afișarea numelui elementului selectat
+//
+//        if (inventory[index].getName() == "Small Health Potion" || inventory[index].getName() == "Medium Health Potion" || inventory[index].getName() == "Large Health Potion") {
+//            std::cout << "Se apeleaza metoda Potion::use()" << std::endl; // Mesaj pentru a verifica dacă metoda Potion::use() este apelată
+//            dynamic_cast<Potion&>(inventory[index]).use(*this);
+//        } else if (inventory[index].getName() == "Sword") {
+//            std::cout << "Se apeleaza metoda Sword::use()" << std::endl; // Mesaj pentru a verifica dacă metoda Sword::use() este apelată
+//            dynamic_cast<Sword&>(inventory[index]).use(*this);
+//        }
+//
+//        inventory[index].setQuantity(inventory[index].getQuantity() - 1);
+//
+//        if (inventory[index].getQuantity() == 0) {
+//            inventory.erase(inventory.begin() + index);
+//        }
+//    } else {
+//        std::cout << "Indexul itemului este invalid." << std::endl;
+//    }
+//}
+
+//void Player::useItem(int index) {
+//    if (index >= 0 && static_cast<size_t>(index) < inventory.size()) {
+//        std::cout << "Item selectat: " << inventory[index].getName() << std::endl; // Mesaj pentru afișarea numelui elementului selectat
+//
+//        Potion* potion = dynamic_cast<Potion*>(&inventory[index]);
+//        if (potion != nullptr) {
+//            std::cout << "Se apeleaza metoda Potion::use()" << std::endl; // Mesaj pentru a verifica dacă metoda Potion::use() este apelată
+//            potion->use(*this);
+//        } else {
+//            std::cout << "Elementul selectat nu este o potiune." << std::endl;
+//            std::cout << "Item selectat: " << inventory[index].getName() << ", tip: " << typeid(inventory[index]).name() << std::endl;
+//        }
+//
+//        inventory[index].setQuantity(inventory[index].getQuantity() - 1);
+//
+//        if (inventory[index].getQuantity() == 0) {
+//            inventory.erase(inventory.begin() + index);
+//        }
+//    } else {
+//        std::cout << "Indexul itemului este invalid." << std::endl;
+//    }
+//}
 
 void Player::takeDmg(int damage)
 {
@@ -194,6 +242,7 @@ void Player::LevelUp_Player()
         hp = lhp + 40;
         lhp = hp;
         atk += 5;
+        Shop::resetShop();
         std::cout << "Felicitari! Ai acum nivelul: " << level << "!" << '\n';
         if(level == 1)
         {
@@ -212,8 +261,3 @@ void Player::LevelUp_Player()
         }
     }
 }
-
-
-
-
-

@@ -10,9 +10,12 @@
 #include "player.h"
 #include "mob.h"
 #include "attack.h"
+#include <list>
+#include <map>
+#include "itemfactory.h"
 
-void input_mobi(int n)
-{
+    void input_mobi(int n)
+    {
     std::vector<Mob> mobs;
     for(int i = 0; i < n; i++)
     {
@@ -38,23 +41,10 @@ void input_mobi(int n)
     {
         std::cout<<mobs[i]<<'\n';
     }
-}
+    }
 
-//class Attack {
-//public:
-//    static void performAttack(Player& player, Mob& mob)
-//    {
-//        mob.takeDmg(player.getAtk());
-//        if (mob.isAlive())
-//        {
-//            player.takeDmg(mob.getAtk());
-//        }
-//    }
-//    ~Attack()=default;
-//};
-
-void fightEnemy(Player& player, Mob& currentEnemy)
-{
+    void fightEnemy(Player& player, Mob& currentEnemy)
+    {
     while (player.isAlive() && currentEnemy.isAlive() && player.getVerify() != 2) {
         Attack::performAttack(player, currentEnemy);
         player.LowHp_Skill();
@@ -77,22 +67,65 @@ void fightEnemy(Player& player, Mob& currentEnemy)
         std::cout << '\n' << '\n';
         exit(0);
     }
-}
+    }
 
-//void Potion::use(Player& player) {
-//    int hpToAdd = getProp();
-//    std::cout << "Ai folosit potiunea " << getName() << ". Aceasta iti adauga " << hpToAdd << " hp." << std::endl;
-//    player.addHp(hpToAdd);
-//}
-//
-//void Sword::use(Player& player) {
-//    int atkToAdd = getProp();
-//    std::cout << "Ai echipat sabia " << getName() << ".\n";
-//    player.addAtk(atkToAdd);
-//}
+    int main()
+    {
+    std::cout << "........~~........" << '\n' << '\n';
+    std::cout << "Ilustrarea RTTI:" << '\n';
 
-int main()
-{
+    Item<std::string, int>* item = new Sword<std::string, int>("Excalibur", 50, 1000, 1, 1);
+    if (auto sword = dynamic_cast<Sword<std::string, int>*>(item))
+    {
+        std::cout << "RTTI: Item is a Sword with attack power: " << sword->getAtk() << '\n';
+    }
+    else
+    {
+        std::cout << "RTTI: Item is not a Sword" << '\n';
+    }
+    delete item;
+    std::cout << '\n' << "........~~........" << '\n' << '\n';
+
+    std::cout << "........~~........" << '\n' << '\n';
+    std::cout << "Folosire std::list" << '\n' << '\n';
+
+    std::list<std::string> inventory;
+    inventory.emplace_back("Sword");
+    inventory.emplace_back("Shield");
+    inventory.emplace_back("Potion");
+
+    std::cout << "Inventar:" << '\n';
+    for (const auto& iteme : inventory) {
+        std::cout << iteme << '\n';
+    }
+    std::cout << '\n' << "Folosire std::map" << '\n' << '\n';
+    std::map<std::string, int> shopStock;
+    shopStock["Sword"] = 10;
+    shopStock["Shield"] = 5;
+    shopStock["Potion"] = 20;
+
+    std::cout << "Stock Shop:" << '\n';
+    for (const auto& [iteme, quantity] : shopStock) {
+        std::cout << iteme << ": " << quantity << '\n';
+    }
+    std::cout << '\n' << "........~~........" << '\n' << '\n';
+
+    std::cout << "........~~........" << '\n' << '\n';
+    std::cout << "Folosire std::sort cu o functie lambda pentru a sorta elementele din inventar:" << '\n' << '\n';
+
+    std::list<std::string> inventoryy = {"Sword", "Shield", "Potion"};
+
+    inventory.sort([](const std::string& a, const std::string& b) {
+        return a < b;
+    });
+
+    std::cout << "Inventar sortat:" << '\n';
+    for (const auto& iteme : inventoryy) {
+        std::cout << iteme << '\n';
+    }
+
+    std::cout << '\n' << "........~~........" << '\n' << '\n';
+
     srand(time(nullptr));
     std::cout<<"    Bine te-am gasit!"<<'\n';
     std::cout<<"    Incepem printr-un mic tutorial, asa de inceput. In mare parte tu vei apasa doar pe niste butoane,"<<'\n';
@@ -103,16 +136,16 @@ int main()
     std::cout<<"    P.S: Ai grija sa nu opresti rularea programului ca te ai dus...pierzi tot progresul din pacate ://"<<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Alege numele tau: ";
-    static Player player("", 500, 20, 100, 0, 0);
-    static Potion healthPotionSmall("Small Health Potion", 25, 100, 3);
-    static Potion healthPotionMedium("Medium Health Potion", 40, 150, 3);
-    static Potion healthPotionLarge("Large Health Potion", 75, 225, 3);
-    static Sword silverSword("Silver Sword", 20, 500, 1);
     Shop shop;
-    shop.addPotion(healthPotionSmall);
-    shop.addPotion(healthPotionMedium);
-    shop.addPotion(healthPotionLarge);
-    shop.addSword(silverSword);
+    static Player player("", 500, 20, 100, 0, 0);
+    static Potion<std::string, int> healthPotionSmall("Small Health Potion", 25, 100, 3, 3);
+    static Potion<std::string, int> healthPotionMedium("Medium Health Potion", 40, 150, 3, 3);
+    static Potion<std::string, int> healthPotionLarge("Large Health Potion", 75, 225, 3, 3);
+    static Sword<std::string, int> silverSword("Silver Sword", 20, 500, 1, 1);
+    Shop::addPotion(healthPotionSmall);
+    Shop::addPotion(healthPotionMedium);
+    Shop::addPotion(healthPotionLarge);
+    Shop::addSword(silverSword);
     std::cin>>player;
     std::string exit="stop";
     if(player.getName() == exit)
@@ -121,9 +154,24 @@ int main()
     }
     std::cout<<'\n'<<'\n'<<"Salut "<< player.getName() <<'\n';
     std::cout<<'\n'<<'\n';
-    std::cout<<"Acum cu interactiunile:"<<'\n';
-    std::cout<<"1.Start"<<'\n';
-    std::cout<<"2.Exit"<<'\n';
+
+    int interact;
+    std::cout << "~~~~Apasa tasta 1 pentru a folosi ItemFactory (reprezinta folosirea factory patternului)~~~~";
+    std::cin >> interact;
+    if(interact == 1)
+    {
+        auto sword = ItemFactory::createItem("Sword", "Custom Sword", 50, 1000, 1, 1);
+        player.addToInventory(*sword);
+        auto potion = ItemFactory::createItem("Potion", "Random Healing Potion", 20, 100, 1, 1);
+        player.addToInventory(*potion);
+        player.showInventory();
+        std::cout << '\n';
+    }
+    std::cout << "Ne intoarcem la joc..." << '\n' << '\n';
+
+    //    std::cout<<"Acum cu interactiunile:"<<'\n';
+    //    std::cout<<"1.Start"<<'\n';
+    //    std::cout<<"2.Exit"<<'\n';
     std::cout<<'\n'<<'\n'<<"--------O MICA PARANTEZA--------"<<'\n'<<'\n';
     std::cout<<"Sa ne distram cu inputul si outputul de mobi:"<<'\n'<<'\n';
     std::cout<<"Da un numar de mobi: ";
@@ -207,30 +255,30 @@ int main()
                     std::cin >> interact3;
                     if(interact3 == 1)
                     {
-                        shop.displayItems();
-                        const std::vector<Item>& shopItems = shop.getItems();
-                        if(player.getGold() < shopItems[0].getPrice())
+                        Shop::displayItems();
+                        const std::vector<Item<std::string, int>*>& shopItems = Shop::getItems();
+                        if(player.getGold() < shopItems[0]->getPrice())
                             std::cout << "Ai fonduri insuficiente pentru a mai putea cumpara din magazin!" << '\n' << '\n';
                         else
                         {
                             std::cout << "Alege ce potiune doresti sa achizitionezi: " << '\n';
                             int ok = 1;
-                            while(player.getGold() >= shopItems[0].getPrice() && ok == 1)
+                            while(player.getGold() >= shopItems[0]->getPrice() && ok == 1)
                             {
-//                                std::cout << "0." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
-//                                std::cout << "1." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
-//                                std::cout << "2." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
-//                                std::cout << "3." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
+                                std::cout << "0." << shopItems[0]->getName() << " (" << shopItems[0]->getQuantity() << ")" << '\n';
+                                std::cout << "1." << shopItems[1]->getName() << " (" << shopItems[1]->getQuantity() << ")" << '\n';
+                                std::cout << "2." << shopItems[2]->getName() << " (" << shopItems[2]->getQuantity() << ")" << '\n';
+                                std::cout << "3." << shopItems[3]->getName() << " (" << shopItems[3]->getQuantity() << ")" << '\n';
                                 std::cout << "4.Exit Shop" << '\n';
                                 int i;
                                 std::cin >> i;
                                 if(i == 4) break;
                                 if(!shopItems.empty())
                                 {
-                                    const Item& itemToBuy = shopItems[i];
-                                    player.buyItem(itemToBuy, shop);
+                                    Item<std::string, int>* itemToBuy = shopItems[i];
+                                    player.buyItem(*itemToBuy, shop);
                                 }
-                                if(player.getGold() < shopItems[0].getPrice())
+                                if(player.getGold() < shopItems[0]->getPrice())
                                 {
                                     std::cout << "Ai fonduri insuficiente pentru a mai putea cumpara din magazin!" << '\n' << '\n';
                                     ok = 0;
@@ -281,30 +329,30 @@ int main()
                     std::cout << '\n' << "Ai fugit de " << currentEnemy.getName() << "!" << '\n';
                     break;
                 case 3:
-                    shop.displayItems();
-                    const std::vector<Item>& shopItems = shop.getItems();
-                    if(player.getGold() < shopItems[0].getPrice())
+                    Shop::displayItems();
+                    const std::vector<Item<std::string, int>*>& shopItems = Shop::getItems();
+                    if(player.getGold() < shopItems[0]->getPrice())
                         std::cout << "Ai fonduri insuficiente pentru a putea cumpara din magazin!" << '\n' << '\n';
                     else
                     {
                         std::cout << "Alege ce potiune doresti sa achizitionezi: " << '\n';
                         int ok = 1;
-                        while(player.getGold() >= shopItems[0].getPrice() && ok == 1)
+                        while(player.getGold() >= shopItems[0]->getPrice() && ok == 1)
                         {
-//                            std::cout << "0." << shopItems[0].getName() << " (" << shopItems[0].getQuantity() << ")" << '\n';
-//                            std::cout << "1." << shopItems[1].getName() << " (" << shopItems[1].getQuantity() << ")" << '\n';
-//                            std::cout << "2." << shopItems[2].getName() << " (" << shopItems[2].getQuantity() << ")" << '\n';
-//                            std::cout << "3." << shopItems[3].getName() << " (" << shopItems[3].getQuantity() << ")" << '\n';
+                            std::cout << "0." << shopItems[0]->getName() << " (" << shopItems[0]->getQuantity() << ")" << '\n';
+                            std::cout << "1." << shopItems[1]->getName() << " (" << shopItems[1]->getQuantity() << ")" << '\n';
+                            std::cout << "2." << shopItems[2]->getName() << " (" << shopItems[2]->getQuantity() << ")" << '\n';
+                            std::cout << "3." << shopItems[3]->getName() << " (" << shopItems[3]->getQuantity() << ")" << '\n';
                             std::cout << "4.Exit Shop" << '\n';
                             int i;
                             std::cin >> i;
                             if(i == 4) break;
                             if(!shopItems.empty())
                             {
-                                const Item& itemToBuy = shopItems[i];
-                                player.buyItem(itemToBuy, shop);
+                                Item<std::string, int>* itemToBuy = shopItems[i];
+                                player.buyItem(*itemToBuy, shop);
                             }
-                            if(player.getGold() < shopItems[0].getPrice())
+                            if(player.getGold() < shopItems[0]->getPrice())
                             {
                                 std::cout << "Ai fonduri insuficiente pentru a putea cumpara din magazin!" << '\n' << '\n';
                                 ok = 0;
@@ -338,4 +386,4 @@ int main()
         }
     }
     return 0;
-}
+    }

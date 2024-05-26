@@ -3,18 +3,27 @@
 
 #include <string>
 
+class Player;
+
+template <typename N, typename P>
 class Item {
 protected:
-    std::string name;
-    int price, quantity, prop;
-public:
-    Item(std::string name, int prop, int price, int quantity);
+    N name;
+    P price; P prop; P quantity; P initQuantity;
 
-    [[nodiscard]] const std::string& getName() const;
-    [[nodiscard]] int getPrice() const;
-    [[nodiscard]] int getQuantity() const;
-    [[nodiscard]] int getProp() const;
-    void setQuantity(int nQ);
+public:
+    Item(N name, P prop, P price, P quantity, P initQuantity)
+            : name(std::move(name)), price(price), prop(prop), quantity(quantity), initQuantity(initQuantity) {}
+
+    [[nodiscard]] N& getName() { return name; }
+    [[nodiscard]] P getPrice() { return price; }
+    [[nodiscard]] P getQuantity() { return quantity; }
+    [[nodiscard]] P getinitQuantity() { return initQuantity; }
+    [[nodiscard]] P getProp() { return prop; }
+    void setQuantity(int nQ) { quantity = nQ; }
+    void resetQuantity() { quantity = initQuantity; }
+
+    //virtual void use(Player& player) = 0;
     virtual ~Item() = default;
 };
 

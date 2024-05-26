@@ -1,6 +1,3 @@
-//
-// Created by Teo on 4/21/2024.
-//
 #ifndef OOP_PLAYER_H
 #define OOP_PLAYER_H
 
@@ -8,18 +5,22 @@
 #include <vector>
 #include <string>
 #include "item.h"
-class Shop;
+#include "shop.h"
+
+template <typename N, typename P>
 class Potion;
+
+template <typename N, typename P>
 class Sword;
 
 class Player {
 private:
     int hp = 500, exp = 0, level = 0, gold = 100, atk = 20, lhp = hp, lhps = 2;
     int verify = 0;
-    std::vector<Item> inventory;
+    std::vector<Item<std::string, int>> inventory;
     std::string name;
 public:
-    void buyItem(const Item& item, Shop& shop);
+    void buyItem(Item<std::string, int>& item, Shop& shop);
     void useItem(int index);
     Player(std::string name, int hp, int atk, int gold, int exp, int level);
 
@@ -34,8 +35,8 @@ public:
     [[nodiscard]] int getGold() const;
 
     void LowHp_Skill();
-    void addToInventory(const Item& item);
-    void showInventory() const;
+    void addToInventory(Item<std::string, int>& item);
+    void showInventory();
     //[[nodiscard]] int getInventorySize() const;
     [[nodiscard]] bool isInventoryEmpty() const;
     void addHp(int hp);

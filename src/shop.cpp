@@ -22,11 +22,11 @@ void Shop::displayItems() {
     std::cout << '\n';
 }
 
-void Shop::resetShop(){
-    for (auto& item : items) {
-        item->resetQuantity();
-    }
-}
+//void Shop::resetShop(){
+//    for (auto& item : items) {
+//        item->resetQuantity();
+//    }
+//}
 
 std::vector<Item<std::string, int>*>& Shop::getItems() {
     return items;

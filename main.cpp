@@ -69,7 +69,7 @@
     }
     }
 
-    int main()
+int main()
     {
     std::cout << "........~~........" << '\n' << '\n';
     std::cout << "Ilustrarea RTTI:" << '\n';
@@ -136,7 +136,7 @@
     std::cout<<"    P.S: Ai grija sa nu opresti rularea programului ca te ai dus...pierzi tot progresul din pacate ://"<<'\n';
     std::cout<<'\n'<<'\n';
     std::cout<<"Alege numele tau: ";
-    Shop shop;
+    Shop& shop = Shop::getInstance();
     static Player player("", 500, 20, 100, 0, 0);
     static Potion<std::string, int> healthPotionSmall("Small Health Potion", 25, 100, 3, 3);
     static Potion<std::string, int> healthPotionMedium("Medium Health Potion", 40, 150, 3, 3);
@@ -265,10 +265,10 @@
                             int ok = 1;
                             while(player.getGold() >= shopItems[0]->getPrice() && ok == 1)
                             {
-//                                std::cout << "0." << shopItems[0]->getName() << " (" << shopItems[0]->getQuantity() << ")" << '\n';
-//                                std::cout << "1." << shopItems[1]->getName() << " (" << shopItems[1]->getQuantity() << ")" << '\n';
-//                                std::cout << "2." << shopItems[2]->getName() << " (" << shopItems[2]->getQuantity() << ")" << '\n';
-//                                std::cout << "3." << shopItems[3]->getName() << " (" << shopItems[3]->getQuantity() << ")" << '\n';
+                                std::cout << "0." << shopItems[0]->getName() << " (" << shopItems[0]->getQuantity() << ")" << '\n';
+                                std::cout << "1." << shopItems[1]->getName() << " (" << shopItems[1]->getQuantity() << ")" << '\n';
+                                std::cout << "2." << shopItems[2]->getName() << " (" << shopItems[2]->getQuantity() << ")" << '\n';
+                                std::cout << "3." << shopItems[3]->getName() << " (" << shopItems[3]->getQuantity() << ")" << '\n';
                                 std::cout << "4.Exit Shop" << '\n';
                                 int i;
                                 std::cin >> i;
@@ -339,10 +339,10 @@
                         int ok = 1;
                         while(player.getGold() >= shopItems[0]->getPrice() && ok == 1)
                         {
-//                            std::cout << "0." << shopItems[0]->getName() << " (" << shopItems[0]->getQuantity() << ")" << '\n';
-//                            std::cout << "1." << shopItems[1]->getName() << " (" << shopItems[1]->getQuantity() << ")" << '\n';
-//                            std::cout << "2." << shopItems[2]->getName() << " (" << shopItems[2]->getQuantity() << ")" << '\n';
-//                            std::cout << "3." << shopItems[3]->getName() << " (" << shopItems[3]->getQuantity() << ")" << '\n';
+                            std::cout << "0." << shopItems[0]->getName() << " (" << shopItems[0]->getQuantity() << ")" << '\n';
+                            std::cout << "1." << shopItems[1]->getName() << " (" << shopItems[1]->getQuantity() << ")" << '\n';
+                            std::cout << "2." << shopItems[2]->getName() << " (" << shopItems[2]->getQuantity() << ")" << '\n';
+                            std::cout << "3." << shopItems[3]->getName() << " (" << shopItems[3]->getQuantity() << ")" << '\n';
                             std::cout << "4.Exit Shop" << '\n';
                             int i;
                             std::cin >> i;

@@ -17,7 +17,14 @@ public:
     static void addPotion(Potion<std::string, int>& potion);
     static void addSword(Sword<std::string, int>& sword);
     static void displayItems();
-    static void resetShop();
+
+    static Shop& getInstance() {
+        static Shop instance;
+        return instance;
+    }
+    static void resetShop() {
+        getInstance().items.clear();
+    }
     static std::vector<Item<std::string, int>*>& getItems();
     ~Shop();
 };

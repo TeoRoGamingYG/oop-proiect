@@ -99,10 +99,6 @@ void Player::showInventory() {
     }
 }
 
-//int Player::getInventorySize() const {
-//    return inventory.size();
-//}
-
 bool Player::isInventoryEmpty() const {
     return inventory.empty();
 }
@@ -168,51 +164,6 @@ void Player::useItem(int index) {
         std::cout << "Indexul itemului este invalid." << std::endl;
     }
 }
-
-//void Player::useItem(int index) {
-//    if (index >= 0 && unsigned(index) < inventory.size()) {
-//        std::cout << "Item selectat: " << inventory[index].getName() << std::endl; // Mesaj pentru afișarea numelui elementului selectat
-//
-//        if (inventory[index].getName() == "Small Health Potion" || inventory[index].getName() == "Medium Health Potion" || inventory[index].getName() == "Large Health Potion") {
-//            std::cout << "Se apeleaza metoda Potion::use()" << std::endl; // Mesaj pentru a verifica dacă metoda Potion::use() este apelată
-//            dynamic_cast<Potion&>(inventory[index]).use(*this);
-//        } else if (inventory[index].getName() == "Sword") {
-//            std::cout << "Se apeleaza metoda Sword::use()" << std::endl; // Mesaj pentru a verifica dacă metoda Sword::use() este apelată
-//            dynamic_cast<Sword&>(inventory[index]).use(*this);
-//        }
-//
-//        inventory[index].setQuantity(inventory[index].getQuantity() - 1);
-//
-//        if (inventory[index].getQuantity() == 0) {
-//            inventory.erase(inventory.begin() + index);
-//        }
-//    } else {
-//        std::cout << "Indexul itemului este invalid." << std::endl;
-//    }
-//}
-
-//void Player::useItem(int index) {
-//    if (index >= 0 && static_cast<size_t>(index) < inventory.size()) {
-//        std::cout << "Item selectat: " << inventory[index].getName() << std::endl; // Mesaj pentru afișarea numelui elementului selectat
-//
-//        Potion* potion = dynamic_cast<Potion*>(&inventory[index]);
-//        if (potion != nullptr) {
-//            std::cout << "Se apeleaza metoda Potion::use()" << std::endl; // Mesaj pentru a verifica dacă metoda Potion::use() este apelată
-//            potion->use(*this);
-//        } else {
-//            std::cout << "Elementul selectat nu este o potiune." << std::endl;
-//            std::cout << "Item selectat: " << inventory[index].getName() << ", tip: " << typeid(inventory[index]).name() << std::endl;
-//        }
-//
-//        inventory[index].setQuantity(inventory[index].getQuantity() - 1);
-//
-//        if (inventory[index].getQuantity() == 0) {
-//            inventory.erase(inventory.begin() + index);
-//        }
-//    } else {
-//        std::cout << "Indexul itemului este invalid." << std::endl;
-//    }
-//}
 
 void Player::takeDmg(int damage)
 {

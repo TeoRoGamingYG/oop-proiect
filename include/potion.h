@@ -17,9 +17,6 @@ public:
     Potion(N name, P hp, P price, P quantity, P initQuantity)
             : Item<N, P>(std::move(name), hp, price, quantity, initQuantity), hp(hp) {}
 
-//    void use(Player& player);
-//    [[nodiscard]] P getHp();
-//    [[nodiscard]] N getName();
     void use(Player& player)
     {
         int hpToAdd = getHp();

@@ -4,7 +4,6 @@
 #include <iostream>
 #include "item.h"
 
-// Forward declaration pentru clasa Player
 class Player;
 
 template <typename N, typename P>
